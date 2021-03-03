@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductController;
-
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,6 +32,15 @@ Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 's
 
 
 Auth::routes();
-Route::resource('admin', AdminController::class);
-Route::resource('product', ProductController::class);
+
+//admin
+Route::get('/admin', function () {
+    return view('admin.index');
+})->middleware('auth')->name('admin.index');
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//product
+Route::resource('product', ProductController::class);
+
+//user
+Route::resource('user',UserController::class);

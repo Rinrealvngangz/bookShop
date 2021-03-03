@@ -1,25 +1,28 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\User;
 
 use Illuminate\Http\Request;
 
-class AdminController extends Controller
+class UserController extends Controller
 {
+
+    public function __construct()
+     {
+         $this->middleware('auth');
+     }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     *
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index()
     {
-        return view('admin.index');
+         $user = User::all();
+         return view('admin.user.index',['user'=>$user]);
+
     }
 
     /**
@@ -53,7 +56,6 @@ class AdminController extends Controller
     {
         //
     }
-
 
     /**
      * Show the form for editing the specified resource.
