@@ -6,6 +6,7 @@ use App\Http\Controllers;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -44,3 +45,6 @@ Route::resource('product', ProductController::class);
 
 //user
 Route::resource('user',UserController::class);
+
+//role
+Route::resource('role',RoleController::class);

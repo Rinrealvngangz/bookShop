@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="/plugins/summernote/summernote-bs4.min.css">
+   @yield('styles')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
@@ -128,5 +129,6 @@
       <script src="/dist/js/pages/dashboard.js"></script>
      <!-- DataTables  & Plugins -->
        @yield('script')
+       @yield('script-tagsinput')
 </body>
 </html>

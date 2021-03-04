@@ -1,18 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\User;
-
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class RoleController extends Controller
 {
-
-    public function __construct()
-     {
-         $this->middleware('auth');
-     }
-
     /**
      * Display a listing of the resource.
      *
@@ -20,10 +14,8 @@ class UserController extends Controller
      */
     public function index()
     {
-         $user = User::all();
-
-         return view('admin.user.index',['user'=>$user]);
-
+             $role = Role::all();
+             return view('admin.role.index',compact('role'));
     }
 
     /**
@@ -33,7 +25,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -44,7 +36,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       // $role = Role::create(['name' => 'writer']);
+
     }
 
     /**
@@ -55,7 +48,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -66,7 +59,15 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+       $role = Role::findOrFail($id);
+
+
+        // $permission = Permission::all()->pluck(
+        //     'name',
+        //      'id'
+        // );
+
+      return view('admin.role.edit',compact('role'));
     }
 
     /**
@@ -78,7 +79,12 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+    //     $nameRole =  $request->input('name');
+    //     $idPermission =  $request->input('name-permission');
+    //     $role = Role::findOrFail($id);
+    //     $role->name =$nameRole;
+    //    // $role->
+    //     dd($name);
     }
 
     /**
