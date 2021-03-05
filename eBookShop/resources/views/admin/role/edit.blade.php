@@ -18,9 +18,10 @@
                </div>
                <div class="form-group">
       <div class='form-group'>
-               <label for='roles_permissions'>Permission</label>
+               <label for='roles_permissions'>Add Permission</label>
+
                <input  type='text' class='form-control' data-role="tagsinput" name='roles_permissions' id="roles_permissions"
-                value="@foreach($role->permissions as $permissions) {{$permissions->name. ',' }}  @endforeach">
+                value="@foreach($role->permissions as $permissions) {{$permissions->name.',' }}  @endforeach">
 
       </div>
     {{ Form::button('Update the Role!', ['class' => 'btn btn-success', 'type' => 'submit']) }}
@@ -41,5 +42,8 @@
 @section('script-tagsinput')
 
  <script src="/js/admin/bootstrap-tagsinput.js"></script>
- $("input").tagsinput('items');
+
+
+
+
 @endsection

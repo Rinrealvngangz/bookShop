@@ -25,8 +25,17 @@
                 <td>{{$roles->id}}</td>
                 <td>{{$roles->name}}</td>
                 <td>
+
+                    @if($roles->name === "administrator")
+                        <span class="badge badge-info">
+                        {{ __('Full Permission') }}
+                        </span>
+                    @endif
+
                   @foreach($roles->permissions as $permissionsName)
-                <span class="badge badge-info">{{$permissionsName->name}}</span>
+                <span class="badge badge-info">
+                        {{$permissionsName->name}}
+                </span>
                   @endforeach
                 </td>
                <td>
