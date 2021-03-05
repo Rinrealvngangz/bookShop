@@ -1,12 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Http\Requests\CreateRoleRequest;
+use App\Http\Requests\UpdateRoleRequest;
+use Illuminate\Contracts\Session\Session;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
+
+
+
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +32,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-
+          return view('admin.role.create');
     }
 
     /**
@@ -34,9 +41,47 @@ class RoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRoleRequest $request)
     {
-       // $role = Role::create(['name' => 'writer']);
+        $name =$request->input('name');
+         $permission = $request->input('roles_permissions');
+        $stringEdit =  preg_replace('/[-\s]+/', '-', strtolower(trim($permission)));
+        $namePermissions = explode(',', $stringEdit);
+         $result = Role::all()->where('name',$name)->first();
+          if($result === null ){
+
+               if($namePermissions !==null){
+                   $count =0;
+                   foreach ($namePermissions as $namePermission){
+                      $result =  Permission::all()->where('name',$namePermission)->first();
+                        /*if($result ===null){
+                             $permis = Permission::create(['name' => $namePermission]);
+                            $role->givePermissionTo($permis);*/
+
+                        //}else{
+                         if($result !==null){
+                              $count =1;
+
+                            $request->session()->flash('error-exists-Permis','Permisson is exists!');
+                            return redirect()->back();
+                        }
+
+                   }
+                   if($count ==0){
+                       $role = Role::create(['name' => $name]);
+                       foreach ($namePermissions as $namePermission){
+                           $permis = Permission::create(['name' => $namePermission]);
+                           $role->givePermissionTo($permis);
+                       }
+                   }
+
+               }
+              $request->session()->flash('create-role','Role create success!');
+              return redirect()->route('role.index');
+          }else{
+              $request->session()->flash('error-create-Role','Role is exists!');
+              return redirect()->back();
+          }
 
     }
 
@@ -60,13 +105,6 @@ class RoleController extends Controller
     public function edit($id)
     {
        $role = Role::findOrFail($id);
-
-
-        // $permission = Permission::all()->pluck(
-        //     'name',
-        //      'id'
-        // );
-
       return view('admin.role.edit',compact('role'));
     }
 
@@ -77,7 +115,7 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRoleRequest $request, $id)
     {
         $nameRole = $request->input('name');
         $role = Role::findById($id);
@@ -87,9 +125,6 @@ class RoleController extends Controller
 
         $stringEdit =  preg_replace('/[-\s]+/', '-', strtolower(trim($idPermission)));
         $editNamePermissions = explode(',', $stringEdit);
-
-
-
 
         $Permis =array();
         $stack = array();
@@ -149,6 +184,8 @@ class RoleController extends Controller
                 }
             }
 
+        $request->session()->flash('update-role','The Role update success!');
+
      return redirect()->route('role.index');
     }
 
@@ -160,6 +197,9 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        //
+      //   $role = Role::findOrDetail($id);
+          Role::destroy($id);
+        \Illuminate\Support\Facades\Session::flash('delete-role','Role delete success!');
+        return redirect()->back();
     }
 }

@@ -3,6 +3,7 @@
 
 
 @section('content')
+
 <div class="card card-primary">
   <div class="container-fluid">
               <div class="card-header">
@@ -15,12 +16,13 @@
               <div class="form-group">
       {!! Form::label('name', 'Role') !!}
       {!! Form::text('name', $role->name, ['class' => 'form-control']) !!}
+
                </div>
                <div class="form-group">
       <div class='form-group'>
                <label for='roles_permissions'>Add Permission</label>
 
-               <input  type='text' class='form-control' data-role="tagsinput" name='roles_permissions' id="roles_permissions"
+               <input type='text' class='form-control' data-role="tagsinput" name='roles_permissions' id="roles_permissions"
                 value="@foreach($role->permissions as $permissions) {{$permissions->name.',' }}  @endforeach">
 
       </div>
@@ -31,7 +33,19 @@
     </div>
 </div>
 
+    @if(count($errors) >0)
+          <div class="alert alert-danger">
+
+              <ul>
+                  @foreach($errors->all() as $error)
+                     <li>{{$error}}</li>
+                  @endforeach
+              </ul>
+          </div>
+        @endif
+
  @endsection
+
 
  @section('styles')
 
