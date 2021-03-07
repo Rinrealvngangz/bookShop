@@ -22,7 +22,7 @@ class RoleController extends Controller
     public function index()
     {
              $role = Role::all();
-             return view('admin.role.index',compact('role'));
+        return view('admin.role.index',compact('role'));
     }
 
     /**
@@ -69,10 +69,13 @@ class RoleController extends Controller
                    }
                    if($count ==0){
                        $role = Role::create(['name' => $name]);
-                       foreach ($namePermissions as $namePermission){
-                           $permis = Permission::create(['name' => $namePermission]);
-                           $role->givePermissionTo($permis);
-                       }
+                         if(!empty($namePermissions[0])){
+                             foreach ($namePermissions as $namePermission){
+                                 $permis = Permission::create(['name' => $namePermission]);
+                                 $role->givePermissionTo($permis);
+                             }
+                         }
+
                    }
 
                }

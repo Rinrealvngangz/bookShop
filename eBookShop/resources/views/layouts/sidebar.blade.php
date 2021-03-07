@@ -98,13 +98,20 @@
                     <li class="list-inline-item">
                       <a href="{{ route('role.index')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                        <p>Role & Permission</p>
+                        <p>Role</p>
                       </a>
                     </li>
 
+
                   </ul>
-
-
+                    <ul class="nav nav-treeview">
+                  <li class="list-inline-item">
+                      <a href="{{ route('permission.index')}}" class="nav-link">
+                          <i class="far fa-circle nav-icon"></i>
+                          <p>Permission</p>
+                      </a>
+                  </li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                   <a href="pages/widgets.html" class="nav-link">

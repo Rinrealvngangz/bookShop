@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PermissionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -48,3 +49,7 @@ Route::resource('user',UserController::class);
 
 //role
 Route::resource('role',RoleController::class);
+
+
+//permission
+Route::resource('permission',PermissionController::class);
