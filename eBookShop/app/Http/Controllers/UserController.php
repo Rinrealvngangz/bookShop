@@ -1,13 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
-
+use App\Models\Photo;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Traits\HasRoles;
 class UserController extends Controller
 {
-
+    use HasRoles;
     public function __construct()
      {
          $this->middleware('auth');
@@ -55,7 +57,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+
+         $users = User::findOrFail($id);
+        return view('admin.user.show',compact('users'));
     }
 
     /**
@@ -66,7 +70,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $users = User::findOrFail($id);
+        return view('admin.user.edit',compact('users'));
     }
 
     /**
@@ -76,9 +81,29 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+         $input =  $request->all();
+
+         if($file = $request->file('photo_id')){
+             $name = time() . $file->getClientOriginalName();
+             $file->move('images',$name);
+             $photo = Photo::create(['file'=>$name]);
+
+              $input['photo_id'] = $photo->id;
+
+         }
+     //   dd($input['photo_id']);
+       /*  $input['password'] = bcrypt($request->password);
+         $user->firstName = $request->input('firstName');
+         $user->lastName = $request->input('lastName');
+         $user->userName =$request->input('userName');
+         $user->email = $request->input('email');
+         $user->password =$input['password'];
+         $user->photo_id =$input['photo_id'];
+         $user->save();*/
+         return  redirect()->route('user.index');
     }
 
     /**

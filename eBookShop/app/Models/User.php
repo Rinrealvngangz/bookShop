@@ -20,7 +20,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'userName',
-        'name',
+        'firstName',
+        'lastName',
         'email',
         'password',
     ];
@@ -43,5 +44,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function photo(){
+        return $this->belongsTo('App\Models\Photo');
+    }
+
 
 }
