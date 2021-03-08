@@ -1,6 +1,27 @@
 @extends('layouts.main')
 
 @section('content')
+    @if(Session::has('update-permission'))
+        <div class="alert alert-primary" role="alert">
+            <p >{{session('update-permission')}}</p>
+        </div>
+
+    @endif
+
+    @if(Session::has('delete-permission'))
+        <div class="alert alert-danger" role="alert">
+            <p >{{session('delete-permission')}}</p>
+        </div>
+
+    @endif
+
+    @if(Session::has('create-permission'))
+        <div class="alert alert-success" role="alert">
+            <p >{{session('create-permission')}}</p>
+        </div>
+
+    @endif
+
     <div class="container-fluid">
 <div class="row">
     <div class="col-12">
@@ -48,8 +69,8 @@
                     </tr>
                     </tfoot>
                 </table>
-                {!! Form::open(['method'=>'GET' , 'route' => ['role.create']]) !!}
-                {{ Form::button('Create Role', ['class' => 'btn btn-primary', 'type' => 'submit']) }}
+                {!! Form::open(['method'=>'GET' , 'route' => ['permission.create']]) !!}
+                {{ Form::button('Create Permission', ['class' => 'btn btn-primary', 'type' => 'submit']) }}
                 {!! Form::close() !!}
 
             </div>

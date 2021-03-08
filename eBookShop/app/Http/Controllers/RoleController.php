@@ -54,11 +54,7 @@ class RoleController extends Controller
                    $count =0;
                    foreach ($namePermissions as $namePermission){
                       $result =  Permission::all()->where('name',$namePermission)->first();
-                        /*if($result ===null){
-                             $permis = Permission::create(['name' => $namePermission]);
-                            $role->givePermissionTo($permis);*/
 
-                        //}else{
                          if($result !==null){
                               $count =1;
 
