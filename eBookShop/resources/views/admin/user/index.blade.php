@@ -1,7 +1,28 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="container-fluid">
+
+    @if(Session::has('update-user'))
+        <div class="alert alert-success" role="alert">
+            <p >{{session('update-user')}}</p>
+        </div>
+
+    @endif
+
+    @if(Session::has('assignRole-user'))
+        <div class="alert alert-success" role="alert">
+            <p >{{session('assignRole-user')}}</p>
+        </div>
+
+    @endif
+
+    @if(Session::has('delete-user'))
+        <div class="alert alert-danger" role="alert">
+            <p >{{session('delete-user')}}</p>
+        </div>
+
+    @endif
+
     <div class="row">
       <div class="col-12">
         <div class="card">
@@ -28,10 +49,14 @@
                     <td>{{$users->userName}}</td>
                     <td>{{$users->email}}</td>
 
-                  @if(is_null($users->role))
+                  @if(count($users->roles) ==0)
                 <td>{{__('No active')}}</td>
                   @else
-                  <td>{{$users->role->name}}</td>
+                        <td>
+                      @foreach($users->roles as $role)
+                             <span class="badge badge-info">{{$role->name}}</span>
+                        @endforeach
+                        </td>
                  @endif
 
               </tr>
@@ -48,6 +73,9 @@
               </tr>
               </tfoot>
             </table>
+              {!! Form::open(['method'=>'GET' , 'route' => ['user.create']]) !!}
+              {{ Form::button('Create User', ['class' => 'btn btn-primary', 'type' => 'submit']) }}
+              {!! Form::close() !!}
           </div>
           <!-- /.card-body -->
         </div>
@@ -59,8 +87,8 @@
       <!-- /.col -->
     </div>
     <!-- /.row -->
-  </div>
-  <!-- /.container-fluid -->
+
+
   <!-- Page specific script -->
 
 @endsection

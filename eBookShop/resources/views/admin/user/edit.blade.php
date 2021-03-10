@@ -19,11 +19,16 @@
                             <h4 class="text-right">Users Settings</h4>
                         </div>
                         <div class="row mt-3">
-                            <div class="col-md-6"><label for="firstName" class="labels">First Name</label>
-                                <input name="firstName" type="text" class="form-control" placeholder="first name" value={{$users->firstName}}></div>
+
+                            <div class="col-md-6">
+                                <label for="firstName" class="labels">First Name</label>
+                                <input name="firstName" type="text" class="form-control" placeholder="first name" value="{{$users->firstName}}">
+                            </div>
                             <div class="col-md-6"><label for="lastName" class="labels">Last Name</label>
-                                <input name="lastName" type="text" class="form-control" value={{$users->lastName}} placeholder="surname"></div>
+                                <input name="lastName" type="text" class="form-control" value="{{$users->lastName}}" placeholder="lastname">
+                            </div>
                         </div>
+
                         <div class="row mt-3">
                             <div class="col-md-12"><label for="userName" class="labels">User name</label>
                                 <input name="userName" type="text" class="form-control" placeholder="enter phone number" value={{$users->userName}}></div>

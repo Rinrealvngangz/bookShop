@@ -35,21 +35,31 @@ Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 's
 
 Auth::routes();
 
-//admin
-Route::get('/admin', function () {
-    return view('admin.index');
-})->middleware('auth')->name('admin.index');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::middleware(['auth'])->group(function () {
+    //admin
+    Route::get('/admin', function () {
+        return view('admin.index');
+    })->name('admin.index');
+
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 //product
-Route::resource('product', ProductController::class);
+    Route::resource('product', ProductController::class);
 
 //user
-Route::resource('user',UserController::class);
+    Route::resource('user',UserController::class);
 
 //role
-Route::resource('role',RoleController::class);
+    Route::resource('role',RoleController::class);
 
 
 //permission
-Route::resource('permission',PermissionController::class);
+    Route::resource('permission',PermissionController::class);
+//Add-Role-user
+ Route::get('/user/{user}/role',[UserController::class, 'editRole'])->name('user.role');
+ Route::put('/user/{user}/addRole',[UserController::class, 'addRole'])->name('user.addRole');
+
+
+});
+

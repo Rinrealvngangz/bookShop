@@ -33,8 +33,8 @@
         </div>
         <div class="btn-group">
 
-            {!! Form::open(['method'=>'GET' , 'route' => ['user.create',$users->id]]) !!}
-            {{ Form::button('Add role', ['class' => 'btn btn-outline-secondary', 'type' => 'submit']) }}
+            {!! Form::open(['method'=>'GET' , 'route' => ['user.role',$users->id]]) !!}
+            {{ Form::button('Assign role', ['class' => 'btn btn-outline-secondary', 'type' => 'submit']) }}
             {!! Form::close() !!}
 
 

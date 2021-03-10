@@ -7,6 +7,7 @@ use App\Models\Photo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Models\Role;
 class UserController extends Controller
 {
     use HasRoles;
@@ -90,19 +91,23 @@ class UserController extends Controller
              $name = time() . $file->getClientOriginalName();
              $file->move('images',$name);
              $photo = Photo::create(['file'=>$name]);
-
               $input['photo_id'] = $photo->id;
 
          }
-     //   dd($input['photo_id']);
-       /*  $input['password'] = bcrypt($request->password);
+
+        $input['password'] = bcrypt($request->password);
          $user->firstName = $request->input('firstName');
          $user->lastName = $request->input('lastName');
          $user->userName =$request->input('userName');
          $user->email = $request->input('email');
          $user->password =$input['password'];
-         $user->photo_id =$input['photo_id'];
-         $user->save();*/
+        if(array_key_exists('photo_id',$input)){
+            $user->photo_id =$input['photo_id'];
+        }
+
+        $user->save();
+
+        $request->session()->flash('update-user','User update success!');
          return  redirect()->route('user.index');
     }
 
@@ -114,6 +119,62 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+
+       if($user->photo){
+           unlink( public_path() . $user->photo->file);
+           $user->photo->delete();
+       }
+        $user::destroy($id);
+
+       session()->flash('delete-user','Delete  user success!');
+        return redirect()->route('user.index');
+    }
+
+    public function editRole($id){
+
+        $user = User::findOrFail($id);
+        $role = Role::all();
+        $arrayIdRole = array();
+        $IdRole =$user->roles;
+        foreach ($IdRole as $idRoles){
+            array_push($arrayIdRole,$idRoles->id);
+        }
+        return view('admin.user.user_role',compact('role','arrayIdRole','user'));
+    }
+
+    /**
+     * add role user
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function addRole( Request $request,$id){
+
+        $user = User::findOrFail($id);
+        $input = $request->all();
+        $arrayNameRole = array();
+        $originRole = Role::all();
+
+        foreach ($originRole as $nameRole){
+            array_push($arrayNameRole,$nameRole->name);
+        }
+
+
+            if(array_key_exists('arrayIdRole',$input))
+            {
+                foreach ($originRole as $role){
+                    if(in_array($role,$input['arrayIdRole']) == false){
+
+                        $user->removeRole($role);
+                    }
+                }
+                $user->assignRole($input['arrayIdRole']);
+            }else{
+                $user->syncRoles([]);
+            }
+        $request->session()->flash('assignRole-user','Assign role user success!');
+           return redirect()->route('user.index');
     }
 }
