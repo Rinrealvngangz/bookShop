@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateUserRequest extends FormRequest
+class CreateCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,9 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'firstName'=>'required|string|max:255',
-            'lastName'=>'required|string|max:255',
-            'userName'=>'required|string|max:255',
-            'email'=>'required|regex:/(.+)@(.+)\.(.+)/i|email',
-
+            'cate-name' => 'required|string|max:255',
+            
         ];
     }
+
 }

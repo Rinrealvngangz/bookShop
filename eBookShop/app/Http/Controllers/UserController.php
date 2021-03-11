@@ -94,15 +94,15 @@ class UserController extends Controller
               $input['photo_id'] = $photo->id;
 
          }
-     //   dd($input['photo_id']);
-       /*  $input['password'] = bcrypt($request->password);
+
+       $input['password'] = bcrypt($request->password);
          $user->firstName = $request->input('firstName');
          $user->lastName = $request->input('lastName');
          $user->userName =$request->input('userName');
          $user->email = $request->input('email');
          $user->password =$input['password'];
          $user->photo_id =$input['photo_id'];
-         $user->save();*/
+         $user->save();
          return  redirect()->route('user.index');
     }
 
@@ -114,6 +114,6 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+
     }
 }

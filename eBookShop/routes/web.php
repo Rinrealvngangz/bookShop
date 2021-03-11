@@ -50,6 +50,6 @@ Route::resource('user',UserController::class);
 //role
 Route::resource('role',RoleController::class);
 
-
+Route::resource('category',Controllers\CategoryController::class);
 //permission
 Route::resource('permission',PermissionController::class);
