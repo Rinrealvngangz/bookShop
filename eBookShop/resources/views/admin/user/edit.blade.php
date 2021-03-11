@@ -34,8 +34,8 @@
                                 <input name="userName" type="text" class="form-control" placeholder="enter phone number" value={{$users->userName}}></div>
                             <div class="col-md-12"><label for="email" class="labels">Email</label>
                                 <input name="email" type="text" class="form-control" placeholder="enter address" value={{$users->email}}></div>
-                            <div class="col-md-12"><label for="password" class="labels">Password</label>
-                                <input name="password" type="text" class="form-control" placeholder="password" value=""></div>
+                            <div class="col-md-12"><label for="password"  class="labels">Password</label>
+                                <input name="password"  class="form-control" type="password" placeholder="password" value=""></div>
                             <div class="form-group">
                                 <label for="photo_id">Choose file image</label>
                                 <input type="file" class="form-control-file" name ="photo_id" id="photo_id">
