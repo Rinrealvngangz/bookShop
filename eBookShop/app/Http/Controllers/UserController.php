@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use App\Models\Photo;
@@ -8,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     use HasRoles;
@@ -36,7 +38,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+         return view('admin.user.create');
     }
 
     /**
@@ -45,9 +47,16 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store( CreateUserRequest $request)
     {
-        //
+         User::create([
+            'firstName' => $request['firstName'],
+            'lastName' => $request['lastName'],
+            'userName' => $request['userName'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+        ]);
+        return redirect()->route('user.index');
     }
 
     /**
@@ -99,7 +108,10 @@ class UserController extends Controller
          $user->firstName = $request->input('firstName');
          $user->lastName = $request->input('lastName');
          $user->userName =$request->input('userName');
-         $user->email = $request->input('email');
+          $email = User::all()->where('email',$input['email'])->first();
+          if($email === $user->email &&$email !==null ||$email ===null ){
+              $user->email = $request->input('email');
+          }
          $user->password =$input['password'];
         if(array_key_exists('photo_id',$input)){
             $user->photo_id =$input['photo_id'];

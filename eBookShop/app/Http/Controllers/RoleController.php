@@ -104,7 +104,16 @@ class RoleController extends Controller
     public function edit($id)
     {
        $role = Role::findOrFail($id);
-      return view('admin.role.edit',compact('role'));
+
+       $permission = Permission::all();
+
+        $arrayIdPermiss = array();
+        $IdPermiss =$role->permissions;
+        foreach ($IdPermiss as $idPermiss){
+            array_push($arrayIdPermiss,$idPermiss->id);
+        }
+
+      return view('admin.role.edit',compact('role','permission','arrayIdPermiss'));
     }
 
     /**
@@ -116,72 +125,29 @@ class RoleController extends Controller
      */
     public function update(UpdateRoleRequest $request, $id)
     {
-        $nameRole = $request->input('name');
-        $role = Role::findById($id);
-        $role->name = $nameRole;
-        $role->save();
-        $idPermission = $request->input('roles_permissions');
+        $role = Role::findOrFail($id);
+        $input = $request->all();
+        $arrayNamePermission = array();
+        $originPermission = Permission::all();
 
-        $stringEdit =  preg_replace('/[-\s]+/', '-', strtolower(trim($idPermission)));
-        $editNamePermissions = explode(',', $stringEdit);
-
-        $Permis =array();
-        $stack = array();
-        $arrPermis = Permission::all();
-
-        if($idPermission ===null){
-            return redirect()->route('role.index');
-        }
-        //delete permissions
-       foreach ($role->permissions as $permission){
-
-       if (in_array($permission->name, $editNamePermissions) == false){
-                   $role->revokePermissionTo($permission);
+        foreach ($originPermission as $namePermission){
+            array_push($arrayNamePermission,$namePermission->name);
         }
 
-    }
-       //add permissions
 
-        foreach ($arrPermis as $item){
-                array_push($Permis,$item->name);
-        }
+        if(array_key_exists('arrayIdPermiss',$input))
+        {
+            foreach ($originPermission as $permission){
+                if(in_array($permission,$input['arrayIdPermiss']) === false){
 
-        foreach ($editNamePermissions as $items) {
-
-            if (in_array($items, $Permis)) {
-                $tempPermission = $items;
-                if(in_array($tempPermission, $stack) == false){
-                    array_push($stack, $tempPermission);
-                }
-                $index= array_search($items, $editNamePermissions);
-                unset($editNamePermissions[$index]);
-
-            }
-        }
-
-        if(!empty($editNamePermissions)) {
-            foreach ($editNamePermissions as $editNamePermission) {
-                Permission::create(['name' => $editNamePermission]);
-            }
-        }
-
-        if (!empty($stack)) {
-
-
-             $array_permission = array_merge($stack,$editNamePermissions);
-            foreach ($array_permission as $editNamePermission) {
-
-                $role->givePermissionTo($editNamePermission);
-
-            }
-        }
-        else{
-                foreach ($editNamePermissions as $editNamePermission) {
-                     $permission =  Permission::create(['name'=>$editNamePermission]);
-                    $role->givePermissionTo($permission);
-
+                    $role->revokePermissionTo($permission);
                 }
             }
+            $role->givePermissionTo($input['arrayIdPermiss']);
+        }else{
+            $role->syncPermissions([]);
+        }
+
 
         $request->session()->flash('update-role','The Role update success!');
 
