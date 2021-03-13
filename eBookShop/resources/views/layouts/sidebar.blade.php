@@ -114,10 +114,10 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                  <a href="pages/widgets.html" class="nav-link">
+                  <a href="{{route('category.index')}}" class="nav-link">
                     <i class="nav-icon fas fa-th"></i>
                     <p>
-                      Widgets
+                     Categories
                       <span class="right badge badge-danger">New</span>
                     </p>
                   </a>

@@ -55,7 +55,7 @@ Route::middleware(['auth','role:administrator'])->group(function () {
 //role
     Route::resource('role',RoleController::class);
 
-
+Route::resource('category',Controllers\CategoryController::class);
 //permission
     Route::resource('permission',PermissionController::class);
 //Add-Role-user
