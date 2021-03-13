@@ -35,15 +35,17 @@ Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 's
 
 Auth::routes();
 
-
-
 Route::middleware(['auth'])->group(function () {
-    //admin
+//admin
     Route::get('/admin', function () {
         return view('admin.index');
     })->name('admin.index');
+});
 
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware(['auth','role:administrator'])->group(function () {
+
+
+
 //product
     Route::resource('product', ProductController::class);
 
@@ -53,7 +55,7 @@ Route::middleware(['auth'])->group(function () {
 //role
     Route::resource('role',RoleController::class);
 
-
+Route::resource('category',Controllers\CategoryController::class);
 //permission
     Route::resource('permission',PermissionController::class);
 //Add-Role-user
