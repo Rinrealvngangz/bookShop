@@ -27,7 +27,7 @@ class UpdateUserRequest extends FormRequest
             'firstName'=>'required|string|max:255',
             'lastName'=>'required|string|max:255',
             'userName'=>'required|string|max:255',
-            'email'=>'required|regex:/(.+)@(.+)\.(.+)/i|email',
+            'email'=>'required|regex:/(.+)@(.+)\.(.+)/i|email'
 
         ];
     }
