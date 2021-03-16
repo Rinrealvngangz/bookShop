@@ -19,6 +19,7 @@ use App\Http\Controllers\PermissionController;
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -35,7 +36,7 @@ Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 's
 
 Auth::routes();
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth','role:staff|administrator'])->group(function () {
 //admin
     Route::get('/admin', function () {
         return view('admin.index');

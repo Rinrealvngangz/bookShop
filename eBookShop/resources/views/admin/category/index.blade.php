@@ -28,6 +28,7 @@
                         {!! Form::open(['action'=>'','method'=>'GET' , 'route' => ['category.create']]) !!}
                              {{ Form::button('Create', ['class' => 'btn btn-primary m-2','name'=>'action' ,'type' => 'submit','value' => 'add-cate']) }}
                     {!! Form::close() !!}
+
                         <table id="example2" class="table table-bordered table-hover">
                             <thead>
                             <tr>
@@ -44,13 +45,12 @@
 
                                     <td>
                                         <div class="form-group" >
-                                            {!! Form::open(['method'=>'GET' , 'route' => ['category.edit',$cate->id]]) !!}
-                                            {{ Form::button('Update', ['class' => 'btn btn-primary float-right m-2' ,'type' => 'submit']) }}
-                                            {!! Form::close() !!}
                                             {!! Form::open(['method'=>'DELETE' , 'route' => ['category.destroy',$cate->id]]) !!}
                                             {{ Form::button('Delete', ['class' => 'btn btn-danger float-right m-2','type' => 'submit']) }}
                                             {!! Form::close() !!}
-
+                                            {!! Form::open(['method'=>'GET' , 'route' => ['category.edit',$cate->id]]) !!}
+                                            {{ Form::button('Update', ['class' => 'btn btn-primary float-right m-2' ,'type' => 'submit']) }}
+                                            {!! Form::close() !!}
                                         </div>
                                     </td>
 
