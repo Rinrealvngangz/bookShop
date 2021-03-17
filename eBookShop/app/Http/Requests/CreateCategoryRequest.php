@@ -25,7 +25,6 @@ class CreateCategoryRequest extends FormRequest
     {
         return [
             'cate-name' => 'required|string|max:255',
-            
         ];
     }
 
