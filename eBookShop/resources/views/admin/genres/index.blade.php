@@ -53,10 +53,10 @@
 {{--                                  @endif--}}
                                     <td>
                                         <div class="form-group" >
-{{--                                            {!! Form::open(['method'=>'GET' , 'route' => ['$genres.edit',$genres->id]]) !!}--}}
-{{--                                            {{ Form::button('Update', ['class' => 'btn btn-primary float-right m-2' ,'type' => 'submit']) }}--}}
-{{--                                            {!! Form::close() !!}--}}
-{{--                                            {!! Form::open(['method'=>'DELETE' , 'route' => ['category.destroy',$cate->id]]) !!}--}}
+                                            {!! Form::open(['method'=>'GET' , 'route' => ['genres.edit',$gen->id]]) !!}
+                                            {{ Form::button('Update', ['class' => 'btn btn-primary float-right m-2' ,'type' => 'submit']) }}
+                                            {!! Form::close() !!}
+{{--                                            {!! Form::open(['method'=>'DELETE' , 'route' => ['category.destroy',$genres->id]]) !!}--}}
 {{--                                            {{ Form::button('Delete', ['class' => 'btn btn-danger float-right m-2','type' => 'submit']) }}--}}
 {{--                                            {!! Form::close() !!}--}}
 

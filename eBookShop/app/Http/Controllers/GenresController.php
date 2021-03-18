@@ -71,6 +71,7 @@ class GenresController extends Controller
     {
 
 
+
     }
 
     /**
@@ -81,7 +82,9 @@ class GenresController extends Controller
      */
     public function edit($id)
     {
-        //
+
+        $gen = Genres::findOrFail($id);
+        return  view('admin.genres.update',compact('gen'));
     }
 
     /**
@@ -93,7 +96,7 @@ class GenresController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**
