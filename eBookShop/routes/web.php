@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\DiscountController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -63,6 +64,7 @@ Route::resource('category',Controllers\CategoryController::class);
  Route::get('/user/{user}/role',[UserController::class, 'editRole'])->name('user.role');
  Route::put('/user/{user}/addRole',[UserController::class, 'addRole'])->name('user.addRole');
 
-
+// DiscountController
+  Route::resource('discount',DiscountController::class);
 });
 
