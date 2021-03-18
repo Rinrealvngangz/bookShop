@@ -82,9 +82,15 @@ class GenresController extends Controller
      */
     public function edit($id)
     {
-
         $gen = Genres::findOrFail($id);
-        return  view('admin.genres.update',compact('gen'));
+
+//        $htmlOption = "<option value='".$gen->Categories->id."'>{$gen->Categories->name}</option></br>";
+//
+//        $categories = Category::where('id','=',$gen->Categories->id);
+        $category= Category::all();
+
+
+        return  view('admin.genres.update',compact('gen', 'category'));
     }
 
     /**

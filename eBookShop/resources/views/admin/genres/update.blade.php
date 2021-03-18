@@ -20,14 +20,16 @@
                 {!! Form::text('name', $gen->name, ['class' => 'form-control']) !!}
             </div>
             <div class="form-group">
-                {!! Form::label('name', 'Name category') !!}
-
-                <select name='cate-belong' class="form-control" id="cate-belong" >
-                    <option value= '{{$gen->Categories->id}}'>{{$gen->Categories->name}}</option>
+                {!! Form::label('name', 'Name Genres') !!}
+                   <select name='cate-belong' class="form-control" id="cate-belong" >
+                @foreach($category as $key => $value)
+                    <option value= '{{$key}}'>{{$value['name']}}</option>
 {{--                    {!!  $htmlOption !!}--}}
+                    @endforeach
+                    <option value="" >No belong to Categories</option>
                 </select>
             </div>
-            {{ Form::button('Update  category', ['class' => 'btn btn-success', 'type' => 'submit']) }}
+            {{ Form::button('Update  Genres', ['class' => 'btn btn-success', 'type' => 'submit']) }}
             {!! Form::close() !!}
 
 
