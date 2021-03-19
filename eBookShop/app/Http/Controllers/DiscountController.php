@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateDiscountRequest;
+use App\Http\Requests\UpdateDiscountRequest;
 use Illuminate\Http\Request;
 use App\Models\Discount;
 class DiscountController extends Controller
@@ -33,9 +35,14 @@ class DiscountController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateDiscountRequest $request)
     {
-        //
+          $input = $request->all();
+          $name = ucfirst($input['name']);
+          $input['name'] =$name;
+          Discount::create($input);
+           session()->flash('success','Create sucess!');
+          return redirect()->route('discount.index');
     }
 
     /**
@@ -57,7 +64,10 @@ class DiscountController extends Controller
      */
     public function edit($id)
     {
-        //
+        $discount =  Discount::findOrFail($id);
+
+          return view('admin.discount.edit',compact('discount'));
+
     }
 
     /**
@@ -67,9 +77,22 @@ class DiscountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateDiscountRequest $request, $id)
     {
-        //
+        $discount = Discount::findOrFail($id);
+        $input = $request->all();
+        $name = ucfirst($input['name']);
+        $input['name'] =$name;
+        $check =  Discount::where('name', '=', $input['name'])->exists();
+         if (!$check ||$check && $input['name'] === $discount->name) {
+                 $discount->name = $input['name'];
+                 $discount->value =$input['value'];
+                 $discount->save();
+          }else{
+              return redirect()->back()->withErrors('Name discount is exists!');
+          }
+          session()->flash('update','Update success!');
+          return redirect()->route('discount.index');
     }
 
     /**
@@ -80,6 +103,8 @@ class DiscountController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Discount::destroy($id);
+        session()->flash('delete','Delete Success!');
+       return redirect()->route('discount.index');
     }
 }

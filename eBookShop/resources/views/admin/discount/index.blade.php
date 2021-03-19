@@ -1,19 +1,19 @@
 @extends('layouts.main')
 
 @section('content')
-    @if(session('delete-category'))
+    @if(session('delete'))
         <div class="alert alert-primary" role="alert">
-            {{ session('delete-category') }}
+            {{ session('delete') }}
         </div>
         @endif
-    @if(session('update-category'))
+    @if(session('update'))
         <div class="alert alert-primary" role="alert">
-            {{ session('update-category') }}
+            {{ session('update') }}
         </div>
     @endif
-    @if(session('create-category'))
-        <div class="alert alert-primary" role="alert">
-            {{ session('create-category') }}
+    @if(session('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session('success') }}
         </div>
     @endif
     <div class="container-fluid">
