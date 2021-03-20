@@ -31,17 +31,17 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <table id="example2" class="table table-bordered table-hover">
+            <table id="table" class="table table-bordered table-hover">
               <thead>
               <tr>
                 <th>Id</th>
                 <th>Name</th>
-                <th>User Name</th>
+                <th data-sortable="true">User Name</th>
                 <th>Email</th>
                   <th>Role Name</th>
               </tr>
               </thead>
-              <tbody>
+              <tbody class="searchable">
               @foreach($user as $users )
                 <tr>
                     <td>{{$users->id}}</td>

@@ -125,7 +125,7 @@
       <script src="/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
       <!-- AdminLTE App -->
       <script src="/dist/js/adminlte.js"></script>
-
+      <script src="https://unpkg.com/bootstrap-table@1.14.2/dist/extensions/multiple-sort/bootstrap-table-multiple-sort.js"></script>
      <!-- DataTables  & Plugins -->
        @yield('script')
        @yield('script-tagsinput')
@@ -134,8 +134,41 @@
             $(".alert").fadeTo(2000, 500).slideUp(500, function(){
                 $(".alert").slideUp(500);
             });
+
+            (function ($) {
+
+$('#filter').keyup(function () {
+
+    var rex = new RegExp($(this).val(), 'i');
+    $('.searchable tr').hide();
+    $('.searchable tr').filter(function () {
+        return rex.test($(this).text());
+    }).show();
+
+})
+
+}(jQuery));
+
+(function($) {
+  $.fixBootstrapMultisort = function() {
+    let $button = $('.multi-sort'),
+      $modal = $('div[id^="sortModal_"].modal'),
+      $toolbar = $modal.find('.modal-dialog #toolbar');
+    // Wrap the button in a button group element.
+    $button.addClass('btn-secondary').wrap($('<div>').addClass('btn-group'));
+    // Fix modal title alignment.
+    $modal.find('.modal-dialog .modal-content .modal-header .modal-title').css({ position: 'absolute', lineHeight: 1 });
+    // Fix the icons.
+    $button.find('.fa.glyphicon-sort').removeClass('glyphicon-sort').addClass('fa-sort').css('width', '1em');
+    $toolbar.find('i.glyphicon-plus').removeClass('glyphicon-plus').addClass('fa-plus');
+    $toolbar.find('i.glyphicon-minus').removeClass('glyphicon-minus').addClass('fa-minus');
+  };
+})(jQuery);
+
         });
 
     </script>
+
+
 </body>
 </html>
