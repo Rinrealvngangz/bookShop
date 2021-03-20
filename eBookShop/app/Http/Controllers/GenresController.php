@@ -81,7 +81,7 @@ class GenresController extends Controller
             $cateName= $genres->Categories->name;
         }
 
-        return view(genres.index,compact('catename'));
+        return view('genres.index',compact('catename'));
 
 
     }
@@ -116,8 +116,9 @@ class GenresController extends Controller
     {
         $input =$request->all();
         $genUpdate = Genres::findOrFail($id);
-        $genSearch = Genres::where('name','=',$input['name-genres']);
-        if ($genSearch !== null && $input['name-genres'] ===$genUpdate->name || $genUpdate ===null)
+        $genSearch = Genres::where('name','=',$input['name-genres'])->exists();
+
+        if (!$genSearch  && $input['name-genres'] ===$genUpdate->name || $genUpdate)
         {
             $genUpdate->name = $input['name-genres'];
             $genUpdate->categories_id=$input['genres-belong'];
