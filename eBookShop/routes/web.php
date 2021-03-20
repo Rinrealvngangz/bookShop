@@ -8,6 +8,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\GenresController;
+use App\Http\Controllers\DiscountController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,6 +42,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin', function () {
         return view('admin.index');
     })->name('admin.index');
+    Route::resource('genres',GenresController::class);
+    Route::resource('category',Controllers\CategoryController::class);
+    Route::resource('product', ProductController::class);
+
 });
 
 Route::middleware(['auth','role:administrator'])->group(function () {
@@ -47,7 +53,7 @@ Route::middleware(['auth','role:administrator'])->group(function () {
 
 
 //product
-    Route::resource('product', ProductController::class);
+
 
 //user
     Route::resource('user',UserController::class);
@@ -55,13 +61,12 @@ Route::middleware(['auth','role:administrator'])->group(function () {
 //role
     Route::resource('role',RoleController::class);
 
-Route::resource('category',Controllers\CategoryController::class);
+
 //permission
     Route::resource('permission',PermissionController::class);
 //Add-Role-user
  Route::get('/user/{user}/role',[UserController::class, 'editRole'])->name('user.role');
  Route::put('/user/{user}/addRole',[UserController::class, 'addRole'])->name('user.addRole');
 
-
+ Route::resource('discount',DiscountController::class);
 });
-

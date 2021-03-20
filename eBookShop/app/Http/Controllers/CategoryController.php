@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
+use App\Models\Genres;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
@@ -111,9 +112,21 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
+        $categories = Category::findOrFail($id);
+        $check = Genres::where('categories_id','=',$categories['id'])->exists();
+        //$check = $categories->genres->exists();
+        if (!$check)
+        {
+            Category::destroy($id);
+            session()->flash('delete-category','Delete Success!');
+        }
+        else
+        {
+            session()->flash('delete-error','Category exiting in Genres!');
+        }
 
-         Category::destroy($id);
-         session()->flash('delete-category','Delete Success!');
+
+
         return redirect()->route('category.index');
     }
 }
