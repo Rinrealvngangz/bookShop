@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\GenresController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,6 +41,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin', function () {
         return view('admin.index');
     })->name('admin.index');
+    Route::resource('genres',GenresController::class);
+    Route::resource('category',Controllers\CategoryController::class);
+    Route::resource('product', ProductController::class);
+
 });
 
 Route::middleware(['auth','role:administrator'])->group(function () {
@@ -47,7 +52,7 @@ Route::middleware(['auth','role:administrator'])->group(function () {
 
 
 //product
-    Route::resource('product', ProductController::class);
+
 
 //user
     Route::resource('user',UserController::class);
@@ -55,7 +60,7 @@ Route::middleware(['auth','role:administrator'])->group(function () {
 //role
     Route::resource('role',RoleController::class);
 
-Route::resource('category',Controllers\CategoryController::class);
+
 //permission
     Route::resource('permission',PermissionController::class);
 //Add-Role-user

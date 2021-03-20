@@ -1,24 +1,19 @@
 @extends('layouts.main')
 
 @section('content')
-    @if(session('delete-category'))
+    @if(session('genres-delete'))
         <div class="alert alert-primary" role="alert">
-            {{ session('delete-category') }}
-        </div>
-        @endif
-    @if(session('update-category'))
-        <div class="alert alert-primary" role="alert">
-            {{ session('update-category') }}
+            {{ session('genres-delete') }}
         </div>
     @endif
-    @if(session('create-category'))
+    @if(session('update-genres'))
         <div class="alert alert-primary" role="alert">
-            {{ session('create-category') }}
+            {{ session('update-genres') }}
         </div>
     @endif
-    @if(session('delete-error'))
-        <div class="alert alert-danger" role="alert">
-            {{ session('delete-error') }}
+    @if(session('genres-create'))
+        <div class="alert alert-primary" role="alert">
+            {{ session('genres-create') }}
         </div>
     @endif
     <div class="container-fluid">
@@ -26,46 +21,54 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Category</h3>
+                        <h3 class="card-title">Genres</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        {!! Form::open(['action'=>'','method'=>'GET' , 'route' => ['category.create']]) !!}
-                             {{ Form::button('Create', ['class' => 'btn btn-primary m-2','name'=>'action' ,'type' => 'submit','value' => 'add-cate']) }}
-                    {!! Form::close() !!}
+                        {!! Form::open(['action'=>'','method'=>'GET' , 'route' => ['genres.create']]) !!}
+                        {{ Form::button('Create', ['class' => 'btn btn-primary m-2','name'=>'action' ,'type' => 'submit','value' => 'add-genres']) }}
+                        {!! Form::close() !!}
                         <table id="example2" class="table table-bordered table-hover">
                             <thead>
                             <tr>
                                 <th>Id</th>
                                 <th>Name</th>
+                                <th>Categories name</th>
                                 <th>Tools</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($category as $cate )
-                                <tr>
-                                    <td>{{$cate->id}}</td>
-                                    <td>{{$cate->name}}</td>
 
+                            @foreach($genres as $key => $gen )
+                                <tr>
+                                    <td>{{$gen['id']}}</td>
+                                    <td>{{$gen['name']}}</td>
+
+                                    @if($gen->categories !== null)
+                                        <td>{{$gen->categories->name}}</td>
+                                    @else
+                                        <td></td>
+                                        @endif
                                     <td>
                                         <div class="form-group" >
-                                            {!! Form::open(['method'=>'GET' , 'route' => ['category.edit',$cate->id]]) !!}
+                                            {!! Form::open(['method'=>'GET' , 'route' => ['genres.edit',$gen->id]]) !!}
                                             {{ Form::button('Update', ['class' => 'btn btn-primary float-right m-2' ,'type' => 'submit']) }}
                                             {!! Form::close() !!}
-                                            {!! Form::open(['method'=>'DELETE' , 'route' => ['category.destroy',$cate->id]]) !!}
+                                            {!! Form::open(['method'=>'DELETE' , 'route' => ['genres.destroy',$gen->id]]) !!}
                                             {{ Form::button('Delete', ['class' => 'btn btn-danger float-right m-2','type' => 'submit']) }}
                                             {!! Form::close() !!}
 
                                         </div>
                                     </td>
-
                                 </tr>
                             @endforeach
+                           {!! Form::close() !!}
                             </tbody>
                             <tfoot>
                             <tr>
                                 <th>Id</th>
                                 <th>Name</th>
+                                <th>Categories name</th>
                                 <th>Tools</th>
                             </tr>
                             </tfoot>
@@ -75,8 +78,6 @@
                     <!-- /.card-body -->
                 </div>
                 <!-- /.card -->
-
-
                 <!-- /.card -->
             </div>
             <!-- /.col -->
@@ -85,7 +86,15 @@
     </div>
     <!-- /.container-fluid -->
     <!-- Page specific script -->
-
+    @if(count($errors) >0)
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{$error}}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 @endsection
 
 @section('script')
