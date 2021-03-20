@@ -165,7 +165,7 @@ $('#filter').keyup(function () {
   };
 })(jQuery);
 
-        });
+
 
     </script>
 
