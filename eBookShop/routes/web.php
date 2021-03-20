@@ -44,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('genres',GenresController::class);
     Route::resource('category',Controllers\CategoryController::class);
     Route::resource('product', ProductController::class);
+
 });
 
 Route::middleware(['auth','role:administrator'])->group(function () {

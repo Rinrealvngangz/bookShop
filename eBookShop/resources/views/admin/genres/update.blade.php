@@ -17,16 +17,16 @@
             </div>
             <div class="form-group">
                 {!! Form::label('name', 'Name Genres') !!}
-                {!! Form::text('name', $gen->name, ['class' => 'form-control']) !!}
+                {!! Form::text('name-genres', $gen->name, ['class' => 'form-control']) !!}
             </div>
             <div class="form-group">
                 {!! Form::label('name', 'Name Genres') !!}
-                   <select name='cate-belong' class="form-control" id="cate-belong" >
+                   <select name='genres-belong' class="form-control" id="genres-belong" >
                 @foreach($category as $key => $value)
-                    <option value= '{{$key}}'>{{$value['name']}}</option>
-{{--                    {!!  $htmlOption !!}--}}
+                    <option value= '{{$value['id']}}'>{{$value['name']}}</option>
                     @endforeach
-                    <option value="" >No belong to Categories</option>
+                    <option value="{{null}}">No belong to Categories</option>
+
                 </select>
             </div>
             {{ Form::button('Update  Genres', ['class' => 'btn btn-success', 'type' => 'submit']) }}

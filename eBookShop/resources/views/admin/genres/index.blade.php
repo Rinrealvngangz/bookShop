@@ -1,14 +1,14 @@
 @extends('layouts.main')
 
 @section('content')
-    @if(session('delete-category'))
+    @if(session('genres-delete'))
         <div class="alert alert-primary" role="alert">
-            {{ session('delete-category') }}
+            {{ session('genres-delete') }}
         </div>
     @endif
-    @if(session('update-category'))
+    @if(session('update-genres'))
         <div class="alert alert-primary" role="alert">
-            {{ session('update-category') }}
+            {{ session('update-genres') }}
         </div>
     @endif
     @if(session('genres-create'))
@@ -39,26 +39,21 @@
                             </thead>
                             <tbody>
 
-                            @foreach($genres as $gen )
+                            @foreach($genres as $key => $gen )
 
                                 <tr>
 
-                                    <td>{{$gen->id}}</td>
-                                    <td>{{$gen->name}}</td>
-{{--                                    @if( $gen->categories->name !==null )--}}
-                                    <td>{{ $gen->categories->name}} </td>
-
-{{--                                        @else--}}
-{{--                                        <td>""</td>--}}
-{{--                                  @endif--}}
+                                    <td>{{$gen['id']}}</td>
+                                    <td>{{$gen['name']}}</td>
+                                    <td>{{$gen['categories_id']}}</td>
                                     <td>
                                         <div class="form-group" >
                                             {!! Form::open(['method'=>'GET' , 'route' => ['genres.edit',$gen->id]]) !!}
                                             {{ Form::button('Update', ['class' => 'btn btn-primary float-right m-2' ,'type' => 'submit']) }}
                                             {!! Form::close() !!}
-{{--                                            {!! Form::open(['method'=>'DELETE' , 'route' => ['category.destroy',$genres->id]]) !!}--}}
-{{--                                            {{ Form::button('Delete', ['class' => 'btn btn-danger float-right m-2','type' => 'submit']) }}--}}
-{{--                                            {!! Form::close() !!}--}}
+                                            {!! Form::open(['method'=>'DELETE' , 'route' => ['genres.destroy',$gen->id]]) !!}
+                                            {{ Form::button('Delete', ['class' => 'btn btn-danger float-right m-2','type' => 'submit']) }}
+                                            {!! Form::close() !!}
 
                                         </div>
                                     </td>
@@ -81,8 +76,6 @@
                     <!-- /.card-body -->
                 </div>
                 <!-- /.card -->
-
-
                 <!-- /.card -->
             </div>
             <!-- /.col -->

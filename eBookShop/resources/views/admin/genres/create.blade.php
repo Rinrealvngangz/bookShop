@@ -20,7 +20,7 @@
                            value="" placeholder="enter name genres">
                     <label for="exampleFormControlSelect1">Belong to category</label>
                     <select name='cate-belong' class="form-control" id="cate-belong" >
-                        <option value="" selected disabled hidden>Choose here</option>
+                        <option value="{{null}}" selected >Choose here</option>
                         {!!  $htmlOption !!}
                     </select>
 

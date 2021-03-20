@@ -57,7 +57,7 @@ class GenresController extends Controller
         {
             return redirect()->back()->withErrors(['Name existed']);
         }
-        session()->flash('genres-create','Create genres success !');
+        session()->flash('genres-delete','Create genres success !');
         return redirect()->route('genres.index');
     }
 
@@ -69,7 +69,19 @@ class GenresController extends Controller
      */
     public function show($id)
     {
+        $catename="";
 
+        $genres = Genres::findOrFault($id)->first();
+        if ($genres->categories_id === null)
+        {
+           dd($genres->categories_id);
+        }
+        else
+        {
+            $cateName= $genres->Categories->name;
+        }
+
+        return view(genres.index,compact('catename'));
 
 
     }
@@ -102,6 +114,21 @@ class GenresController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $input =$request->all();
+        $genUpdate = Genres::findOrFail($id);
+        $genSearch = Genres::where('name','=',$input['name-genres']);
+        if ($genSearch !== null && $input['name-genres'] ===$genUpdate->name || $genUpdate ===null)
+        {
+            $genUpdate->name = $input['name-genres'];
+            $genUpdate->categories_id=$input['genres-belong'];
+            $genUpdate->save();
+        }
+        else
+        {
+            return redirect()->back()->withErrors('Name genres invalid!');
+        }
+        session()->flash('update-genres','Update Success!');
+        return redirect()->route('genres.index');
 
     }
 
@@ -113,9 +140,9 @@ class GenresController extends Controller
      */
     public function destroy($id)
     {
-
-
-
+        Genres::destroy($id);
+        session()->flash('genres-delete','Delete success');
+        return redirect()->route('genres.index');
     }
     /**
      * Show the form for editing the specified resource.
