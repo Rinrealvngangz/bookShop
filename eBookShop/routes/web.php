@@ -69,4 +69,3 @@ Route::middleware(['auth','role:administrator'])->group(function () {
 
 
 });
-

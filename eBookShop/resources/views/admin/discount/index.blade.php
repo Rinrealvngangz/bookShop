@@ -1,24 +1,19 @@
 @extends('layouts.main')
 
 @section('content')
-    @if(session('delete-category'))
+    @if(session('delete'))
         <div class="alert alert-primary" role="alert">
-            {{ session('delete-category') }}
+            {{ session('delete') }}
         </div>
         @endif
-    @if(session('update-category'))
+    @if(session('update'))
         <div class="alert alert-primary" role="alert">
-            {{ session('update-category') }}
+            {{ session('update') }}
         </div>
     @endif
-    @if(session('create-category'))
-        <div class="alert alert-primary" role="alert">
-            {{ session('create-category') }}
-        </div>
-    @endif
-    @if(session('delete-error'))
-        <div class="alert alert-danger" role="alert">
-            {{ session('delete-error') }}
+    @if(session('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session('success') }}
         </div>
     @endif
     <div class="container-fluid">
@@ -26,34 +21,33 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Category</h3>
+                        <h3 class="card-title">Discount</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        {!! Form::open(['action'=>'','method'=>'GET' , 'route' => ['category.create']]) !!}
-                             {{ Form::button('Create', ['class' => 'btn btn-primary m-2','name'=>'action' ,'type' => 'submit','value' => 'add-cate']) }}
-                    {!! Form::close() !!}
+
 
                         <table id="example2" class="table table-bordered table-hover">
                             <thead>
                             <tr>
                                 <th>Id</th>
                                 <th>Name</th>
+                                <th>Value</th>
                                 <th>Tools</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($category as $cate )
+                            @foreach($discount as $discounts )
                                 <tr>
-                                    <td>{{$cate->id}}</td>
-                                    <td>{{$cate->name}}</td>
-
+                                    <td>{{$discounts->id}}</td>
+                                    <td>{{$discounts->name}}</td>
+                                    <td>{{round ($discounts->value * 100 / 100) }}%</td>
                                     <td>
                                         <div class="form-group" >
-                                            {!! Form::open(['method'=>'DELETE' , 'route' => ['category.destroy',$cate->id]]) !!}
+                                            {!! Form::open(['method'=>'DELETE' , 'route' => ['discount.destroy',$discounts->id]]) !!}
                                             {{ Form::button('Delete', ['class' => 'btn btn-danger float-right m-2','type' => 'submit']) }}
                                             {!! Form::close() !!}
-                                            {!! Form::open(['method'=>'GET' , 'route' => ['category.edit',$cate->id]]) !!}
+                                            {!! Form::open(['method'=>'GET' , 'route' => ['discount.edit',$discounts->id]]) !!}
                                             {{ Form::button('Update', ['class' => 'btn btn-primary float-right m-2' ,'type' => 'submit']) }}
                                             {!! Form::close() !!}
                                         </div>
@@ -66,11 +60,14 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Name</th>
+                                <th>Value</th>
                                 <th>Tools</th>
                             </tr>
                             </tfoot>
                         </table>
-
+                        {!! Form::open(['method'=>'GET' , 'route' => ['discount.create']]) !!}
+                        {{ Form::button('Create', ['class' => 'btn btn-primary m-2','type' => 'submit']) }}
+               {!! Form::close() !!}
                     </div>
                     <!-- /.card-body -->
                 </div>

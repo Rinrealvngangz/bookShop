@@ -4,7 +4,8 @@
       <div class="navbar-search-block">
         <form class="form-inline">
           <div class="input-group input-group-sm">
-            <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+
+            <input class="form-control form-control-navbar" id="filter"   type="text"  title="Type in a name" placeholder="Search" aria-label="Search">
             <div class="input-group-append">
 
               <button class="btn btn-navbar" type="button" data-widget="navbar-search">
