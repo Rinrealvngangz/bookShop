@@ -68,6 +68,6 @@ Route::middleware(['auth','role:administrator'])->group(function () {
      Route::put('/user/{user}/addRole',[UserController::class, 'addRole'])->name('user.addRole');
 // DiscountController
 Route::resource('discount',DiscountController::class);
-        });
+
 
     });
