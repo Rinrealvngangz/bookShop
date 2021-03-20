@@ -40,12 +40,15 @@
                             <tbody>
 
                             @foreach($genres as $key => $gen )
-
                                 <tr>
-
                                     <td>{{$gen['id']}}</td>
                                     <td>{{$gen['name']}}</td>
-                                    <td>{{$gen['categories_id']}}</td>
+
+                                    @if($gen->categories !== null)
+                                        <td>{{$gen->categories->name}}</td>
+                                    @else
+                                        <td></td>
+                                        @endif
                                     <td>
                                         <div class="form-group" >
                                             {!! Form::open(['method'=>'GET' , 'route' => ['genres.edit',$gen->id]]) !!}
@@ -57,7 +60,6 @@
 
                                         </div>
                                     </td>
-
                                 </tr>
                             @endforeach
                            {!! Form::close() !!}
@@ -84,7 +86,15 @@
     </div>
     <!-- /.container-fluid -->
     <!-- Page specific script -->
-
+    @if(count($errors) >0)
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{$error}}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 @endsection
 
 @section('script')

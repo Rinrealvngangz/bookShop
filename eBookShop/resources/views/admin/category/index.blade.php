@@ -16,6 +16,11 @@
             {{ session('create-category') }}
         </div>
     @endif
+    @if(session('delete-error'))
+        <div class="alert alert-danger" role="alert">
+            {{ session('delete-error') }}
+        </div>
+    @endif
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">

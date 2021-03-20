@@ -21,17 +21,25 @@
             </div>
             <div class="form-group">
                 {!! Form::label('name', 'Name Genres') !!}
-                   <select name='genres-belong' class="form-control" id="genres-belong" >
-                @foreach($category as $key => $value)
-                    <option value= '{{$value['id']}}'>{{$value['name']}}</option>
-                    @endforeach
-                    <option value="{{null}}">No belong to Categories</option>
-
+                   <select name='genres-belong' class="form-control" id="genres-belong">
+                       @if($gen->categories !== null)
+                           <option value="{{$gen->id}}">{{$gen->categories->name}}</option>
+                           @foreach($category as $key => $value)
+                               @if($value['name'] !== $gen->categories->name )
+                                   <option value= '{{$value['id']}}'>{{$value['name']}}</option>
+                               @endif
+                           @endforeach
+                           <option value="{{null}}">No belong to Categories</option>
+                           @else
+                           <option value="{{null}}" selected>No belong to Categories</option>
+                           @foreach($category as $key => $value)
+                                   <option value= '{{$value['id']}}'>{{$value['name']}}</option>
+                           @endforeach
+                       @endif
                 </select>
             </div>
             {{ Form::button('Update  Genres', ['class' => 'btn btn-success', 'type' => 'submit']) }}
             {!! Form::close() !!}
-
 
         </div>
 

@@ -48,11 +48,9 @@ class GenresController extends Controller
     public function store(StoreGenresRequest $request)
     {
         $data = $request->all();
-        $genres = Genres::where('name','=','$data[genres-name]')->first();
-
+        $genres = Genres::where('name','=',$data['genres-name'])->first();
         if ($genres === null)
         {
-
             Genres::create(['name'=>$data['genres-name'],'categories_id' =>$data['cate-belong']]);
         }
         else
@@ -143,6 +141,7 @@ class GenresController extends Controller
     public function destroy($id)
     {
         Genres::destroy($id);
+
         session()->flash('genres-delete','Delete success');
         return redirect()->route('genres.index');
     }
