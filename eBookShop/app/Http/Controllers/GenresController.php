@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreGenresRequest;
+use App\Http\Requests\UpdateGenresRequest;
 use Illuminate\Http\Request;
 use App\Models\Genres;
 use App\Models\Category;
@@ -43,7 +45,7 @@ class GenresController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreGenresRequest $request)
     {
         $data = $request->all();
         $genres = Genres::where('name','=','$data[genres-name]')->first();
@@ -112,7 +114,7 @@ class GenresController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateGenresRequest $request, $id)
     {
         $input =$request->all();
         $genUpdate = Genres::findOrFail($id);
