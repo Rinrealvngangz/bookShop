@@ -1,26 +1,22 @@
 @extends('layouts.main')
-
 @section('content')
 
     @if(Session::has('update-user'))
         <div class="alert alert-success" role="alert">
             <p >{{session('update-user')}}</p>
         </div>
-
     @endif
 
     @if(Session::has('assignRole-user'))
         <div class="alert alert-success" role="alert">
             <p >{{session('assignRole-user')}}</p>
         </div>
-
     @endif
 
     @if(Session::has('delete-user'))
         <div class="alert alert-danger" role="alert">
             <p >{{session('delete-user')}}</p>
         </div>
-
     @endif
 
     <div class="row">
@@ -31,14 +27,15 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body">
+
             <table id="table" class="table table-bordered table-hover">
               <thead>
               <tr>
                 <th>Id</th>
                 <th>Name</th>
-                <th data-sortable="true">User Name</th>
+                <th>User Name</th>
                 <th>Email</th>
-                  <th>Role Name</th>
+                <th>Role Name</th>
               </tr>
               </thead>
               <tbody class="searchable">
@@ -50,7 +47,7 @@
                     <td>{{$users->email}}</td>
 
                   @if(count($users->roles) ==0)
-                <td>{{__('No active')}}</td>
+                  <td>{{__('No active')}}</td>
                   @else
                         <td>
                       @foreach($users->roles as $role)
@@ -73,6 +70,7 @@
               </tr>
               </tfoot>
             </table>
+
               {!! Form::open(['method'=>'GET' , 'route' => ['user.create']]) !!}
               {{ Form::button('Create User', ['class' => 'btn btn-primary', 'type' => 'submit']) }}
               {!! Form::close() !!}
