@@ -10,6 +10,8 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\GenresController;
 use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\OrderController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -68,5 +70,10 @@ Route::middleware(['auth','role:administrator'])->group(function () {
  Route::get('/user/{user}/role',[UserController::class, 'editRole'])->name('user.role');
  Route::put('/user/{user}/addRole',[UserController::class, 'addRole'])->name('user.addRole');
 
+ //discount
  Route::resource('discount',DiscountController::class);
+//order
+Route::resource('order',OrderController::class);
+Route::get('/order/confirmation',[OrderController::class, 'orderConfirm'])->name('order.confirmation');
+
 });

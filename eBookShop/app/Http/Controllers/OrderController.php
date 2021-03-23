@@ -3,17 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Contracts\OrderContract;
 class OrderController extends Controller
 {
+     private  $orderBook;
+     public function __construct(OrderContract $orderBook)
+     {
+         $this->orderBook =$orderBook;
+     }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
-        //
+        $order = $this->orderBook->getAll();
+       // return view('admin.index',compact('order'));
+        return view('admin.order.request',compact('order'));
     }
 
     /**
@@ -80,5 +89,11 @@ class OrderController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function orderConfirm(){
+        $order = $this->orderBook->getAll();
+        // return view('admin.index',compact('order'));
+         return view('admin.order.request',compact('order'));
     }
 }
