@@ -1,60 +1,66 @@
 @extends('layouts.main')
+
 @section('content')
 
-    @if(Session::has('update-user'))
-        <div class="alert alert-success" role="alert">
-            <p >{{session('update-user')}}</p>
+    @if(Session::has('update-role'))
+        <div class="alert alert-primary" role="alert">
+            <p >{{session('update-role')}}</p>
         </div>
+
+    @endif
+    @if(Session::has('create-role'))
+        <div class="alert alert-success" role="alert">
+            <p >{{session('create-role')}}</p>
+        </div>
+
     @endif
 
-    @if(Session::has('assignRole-user'))
-        <div class="alert alert-success" role="alert">
-            <p >{{session('assignRole-user')}}</p>
-        </div>
-    @endif
-
-    @if(Session::has('delete-user'))
+    @if(Session::has('delete-role'))
         <div class="alert alert-danger" role="alert">
-            <p >{{session('delete-user')}}</p>
+            <p >{{session('delete-role')}}</p>
         </div>
+
     @endif
 
+
+<div class="container-fluid">
     <div class="row">
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">All User</h3>
+            <h3 class="card-title">Order</h3>
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-
             <table id="table" class="table table-bordered table-hover">
               <thead>
               <tr>
                 <th>Id</th>
-                <th>Name</th>
-                <th>User Name</th>
-                <th>Email</th>
-                <th>Role Name</th>
+                <th>Customer</th>
+                <th>State</th>
+                <th>Active</th>
+                <th>Tools</th>
               </tr>
               </thead>
-              <tbody class="searchable">
-              @foreach($user as $users )
+              <tbody>
+              @foreach($order as $orders )
                 <tr>
-                    <td>{{$users->id}}</td>
-                    <td>  <a href="{{route('user.show',$users->id)}}">{{$users->lastName . " " . $users->firstName }}</a> </td>
-                    <td>{{$users->userName}}</td>
-                    <td>{{$users->email}}</td>
+                <td>{{$orders->id}}</td>
+                <td>{{$orders->user->lastName}} {{$orders->user->firstName}}</td>
+                <td>{{$orders->state}}</td>
+                <td>{{$orders->active}}</td>
+               <td>
+               <div class="input-group mb-2">
 
-                  @if(count($users->roles) ==0)
-                  <td>{{__('No active')}}</td>
-                  @else
-                        <td>
-                      @foreach($users->roles as $role)
-                             <span class="badge badge-info">{{$role->name}}</span>
-                        @endforeach
-                        </td>
-                 @endif
+               {!! Form::open(['method'=>'GET' , 'route' => ['order.edit',$orders->id]]) !!}
+              {{ Form::button('<i class="fas fa-edit"></i>', ['class' => 'btn btn-success', 'type' => 'submit']) }}
+                {!! Form::close() !!}
+
+               {!! Form::open(['method'=>'DELETE' , 'route' => ['order.destroy',$orders->id]]) !!}
+              {{ Form::button('<i class="far fa-trash-alt"></i>', ['class' => 'btn btn-danger', 'type' => 'submit']) }}
+               {!! Form::close() !!}
+            </div>
+            </td>
 
               </tr>
 
@@ -62,18 +68,18 @@
               </tbody>
               <tfoot>
               <tr>
-                  <th>Id</th>
-                  <th>Name</th>
-                  <th>User Name</th>
-                  <th>Email</th>
-                  <th>Role Name</th>
+                <th>Id</th>
+                <th>Customer</th>
+                <th>State</th>
+                <th>Active</th>
+                <th>Tools</th>
               </tr>
               </tfoot>
             </table>
-
-              {!! Form::open(['method'=>'GET' , 'route' => ['user.create']]) !!}
-              {{ Form::button('Create User', ['class' => 'btn btn-primary', 'type' => 'submit']) }}
+              {!! Form::open(['method'=>'GET' , 'route' => ['order.create']]) !!}
+              {{ Form::button('Create Role', ['class' => 'btn btn-primary', 'type' => 'submit']) }}
               {!! Form::close() !!}
+
           </div>
           <!-- /.card-body -->
         </div>
@@ -84,9 +90,10 @@
       </div>
       <!-- /.col -->
     </div>
+
     <!-- /.row -->
-
-
+  </div>
+  <!-- /.container-fluid -->
   <!-- Page specific script -->
 
 @endsection
@@ -111,7 +118,7 @@
         "responsive": true, "lengthChange": false, "autoWidth": false,
         "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
       }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-      $('#example2').DataTable({
+      $('#table').DataTable({
         "paging": true,
         "lengthChange": false,
         "searching": false,
@@ -121,6 +128,9 @@
         "responsive": true,
       });
     });
+
+
   </script>
+
 @endsection
 

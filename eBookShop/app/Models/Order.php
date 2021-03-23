@@ -10,10 +10,15 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable=[
-        'state'
+        'state',
+        'active'
     ];
 
     // public function books(){
     //      return $this->belongsToMany('App\Models\Book');
     // }
+
+      public function user(){
+          return $this->belongsTo('App\Models\User');
+     }
 }

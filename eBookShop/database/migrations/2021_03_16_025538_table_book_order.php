@@ -28,6 +28,6 @@ class TableBookOrder extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('book_order');
+        Schema::dropIfExists('order_book');
     }
 }
