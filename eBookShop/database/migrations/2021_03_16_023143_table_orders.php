@@ -18,6 +18,7 @@ class TableOrders extends Migration
             $table->integer('user_id');
             $table->integer('discount_id')->nullable();
             $table->boolean('state')->default(0);
+            $table->boolean('active')->default(0);
             $table->timestamps();
         });
     }
