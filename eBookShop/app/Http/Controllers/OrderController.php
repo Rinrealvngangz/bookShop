@@ -91,6 +91,11 @@ class OrderController extends Controller
         //
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function orderConfirm(){
         $order = $this->orderBook->getAll();
         // return view('admin.index',compact('order'));

@@ -74,6 +74,6 @@ Route::middleware(['auth','role:administrator'])->group(function () {
  Route::resource('discount',DiscountController::class);
 //order
 Route::resource('order',OrderController::class);
-Route::get('/order/confirmation',[OrderController::class, 'orderConfirm'])->name('order.confirmation');
+Route::get('/order/request/confirmation',[OrderController::class, 'orderConfirm'])->name('order.confirmation');
 
 });
