@@ -17,8 +17,10 @@
         </div>
     @endif
     <div class="container-fluid">
+
         <div class="row">
-            <div class="col-12">
+
+            <div class="col-9">
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Genres</h3>
@@ -48,9 +50,9 @@
                                         <td>{{$gen->categories->name}}</td>
                                     @else
                                         <td></td>
-                                        @endif
+                                    @endif
                                     <td>
-                                        <div class="form-group" >
+                                        <div class="form-group">
                                             {!! Form::open(['method'=>'GET' , 'route' => ['genres.edit',$gen->id]]) !!}
                                             {{ Form::button('Update', ['class' => 'btn btn-primary float-right m-2' ,'type' => 'submit']) }}
                                             {!! Form::close() !!}
@@ -62,7 +64,7 @@
                                     </td>
                                 </tr>
                             @endforeach
-                           {!! Form::close() !!}
+                            {!! Form::close() !!}
                             </tbody>
                             <tfoot>
                             <tr>
