@@ -75,5 +75,6 @@ Route::middleware(['auth','role:administrator'])->group(function () {
 //order
 Route::resource('order',OrderController::class);
 Route::get('/order/request/confirmation',[OrderController::class, 'orderConfirm'])->name('order.confirmation');
-
+Route::post('/order/request/{order}/accept',[OrderController::class, 'orderAccept'])->name('order.accept');
+    Route::delete('/order/request/{order}/delete',[OrderController::class, 'orderDelete'])->name('order.delete');
 });

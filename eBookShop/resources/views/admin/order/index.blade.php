@@ -32,9 +32,13 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
+
+
+
                         <table id="table" class="table table-bordered table-hover">
                             <thead>
                             <tr>
+
                                 <th>Id</th>
                                 <th>Customer</th>
                                 <th>State</th>
@@ -46,28 +50,32 @@
                             @foreach($order as $orders )
                                 <tr>
                                     <td>{{$orders->id}}</td>
-                                    <td>{{$orders->user->lastName}} {{$orders->user->firstName}}</td>
-                                    <td>{{$orders->state}}</td>
-                                    <td>{{$orders->active}}</td>
-                                    <td>
-                                        <div class="input-group mb-2">
+                                    <td>   <a href="{{route('order.show',$orders->id)}}"> {{$orders->user->lastName}} {{$orders->user->firstName}}</a></td>
+                                    @if($orders->state === 1)
+                                        <td>Đang giao hàng</td>
+                                    @else
+                                        <td>Đang chờ xử lý</td>
+                                    @endif
+                                    @if($orders->active === 1)
 
-                                            {!! Form::open(['method'=>'GET' , 'route' => ['order.edit',$orders->id]]) !!}
-                                            {{ Form::button('<i class="fas fa-edit"></i>', ['class' => 'btn btn-success', 'type' => 'submit']) }}
-                                            {!! Form::close() !!}
+                                        <td>Đã chấp nhận</td>
+                                    @else
+                                        <td>Chờ chấp nhận</td>
+                                    @endif
+                                    <td>
 
                                             {!! Form::open(['method'=>'DELETE' , 'route' => ['order.destroy',$orders->id]]) !!}
-                                            {{ Form::button('<i class="far fa-trash-alt"></i>', ['class' => 'btn btn-danger', 'type' => 'submit']) }}
+                                            {{ Form::button('Delete', ['class' => 'btn btn-danger', 'type' => 'submit']) }}
                                             {!! Form::close() !!}
-                                        </div>
-                                    </td>
 
+                                    </td>
                                 </tr>
 
                             @endforeach
                             </tbody>
                             <tfoot>
                             <tr>
+
                                 <th>Id</th>
                                 <th>Customer</th>
                                 <th>State</th>
@@ -76,9 +84,7 @@
                             </tr>
                             </tfoot>
                         </table>
-                        {!! Form::open(['method'=>'GET' , 'route' => ['order.create']]) !!}
-                        {{ Form::button('Create Role', ['class' => 'btn btn-primary', 'type' => 'submit']) }}
-                        {!! Form::close() !!}
+
 
                     </div>
                     <!-- /.card-body -->
@@ -118,7 +124,7 @@
                 "responsive": true, "lengthChange": false, "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#table').DataTable({
+            $('#example2').DataTable({
                 "paging": true,
                 "lengthChange": false,
                 "searching": false,
@@ -127,7 +133,12 @@
                 "autoWidth": false,
                 "responsive": true,
             });
+
+
         });
+
+
     </script>
 
 @endsection
+

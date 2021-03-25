@@ -32,9 +32,13 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
+
+
+
                         <table id="table" class="table table-bordered table-hover">
                             <thead>
                             <tr>
+
                                 <th>Id</th>
                                 <th>Customer</th>
                                 <th>State</th>
@@ -46,7 +50,7 @@
                             @foreach($order as $orders )
                                 <tr>
                                     <td>{{$orders->id}}</td>
-                                    <td>{{$orders->user->lastName}} {{$orders->user->firstName}}</td>
+                                    <td><a href="{{route('user.show',$orders->user->id)}}">{{$orders->user->lastName}} {{$orders->user->firstName}}</a></td>
                                     @if($orders->state === 0)
                                         <td> Đang chờ xử lý</td>
                                     @else
@@ -58,19 +62,16 @@
                                         <td>Đã chấp nhận</td>
                                     @endif
                                     <td>
-                                        <div class="btn-group mr-2">
+                                    <div class="input-group">
+                                        {!! Form::open(['method'=>'POST' , 'route' => ['order.accept',$orders->id]]) !!}
 
-                                            {!! Form::open(['method'=>'GET' , 'route' => ['order.edit',$orders->id]]) !!}
-                                            {{ Form::button('Accept', ['class' => 'btn btn-primary', 'type' => 'submit']) }}
-                                            {!! Form::close() !!}
-                                        </div>
-                                        <div class="btn-group mr-2">
-                                            {!! Form::open(['method'=>'DELETE' , 'route' => ['order.destroy',$orders->id]]) !!}
-                                            {{ Form::button('Decline', ['class' => 'btn btn-danger', 'type' => 'submit']) }}
-                                            {!! Form::close() !!}
-                                        </div>
+                                        {{ Form::button('Accept', ['class' => 'btn btn-primary'  ,'type' => 'submit']) }}
+                                        {!! Form::close() !!}
+                                        {!! Form::open(['method'=>'DELETE' , 'route' => ['order.delete',$orders->id]]) !!}
+                                        {{ Form::button('Decline', ['class' => 'btn btn-danger', 'type' => 'submit']) }}
+                                        {!! Form::close() !!}
+                                    </div>
                                     </td>
-
                                 </tr>
 
                             @endforeach
@@ -85,9 +86,7 @@
                             </tr>
                             </tfoot>
                         </table>
-                        {!! Form::open(['method'=>'GET' , 'route' => ['order.create']]) !!}
-                        {{ Form::button('Create Role', ['class' => 'btn btn-primary', 'type' => 'submit']) }}
-                        {!! Form::close() !!}
+
 
                     </div>
                     <!-- /.card-body -->
@@ -127,7 +126,7 @@
                 "responsive": true, "lengthChange": false, "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#table').DataTable({
+            $('#example2').DataTable({
                 "paging": true,
                 "lengthChange": false,
                 "searching": false,
@@ -136,7 +135,12 @@
                 "autoWidth": false,
                 "responsive": true,
             });
+
+
         });
+
+
     </script>
 
 @endsection
+
