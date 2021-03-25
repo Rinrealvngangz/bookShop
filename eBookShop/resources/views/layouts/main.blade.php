@@ -28,6 +28,22 @@
     <link rel="stylesheet" href="/plugins/summernote/summernote-bs4.min.css">
 
     @yield('styles')
+    <style>
+        .dropdown .dropdown-menu{
+            display: block;
+            opacity: 0;
+
+            -moz-transition:    all 1000ms ease;
+            -webkit-transition: all 1000ms ease;
+            -o-transition:      all 1000ms ease;
+            -ms-transition:     all 1000ms ease;
+            transition:         all 1000ms ease;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            opacity: 1;
+        }
+    </style>
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -139,6 +155,9 @@
         });
         $('#table').DataTable();
     });
+
+
 </script>
+
 </body>
 </html>

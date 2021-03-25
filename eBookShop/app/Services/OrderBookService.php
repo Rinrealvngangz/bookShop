@@ -23,4 +23,15 @@ use App\viewModels\OrderBookRequest;
     public function create(OrderBookRequest $order){
                 return $this->order::create($order);
     }
+     public function orderAccept($id){
+
+         $order = $this->order::findOrFail($id);
+         $order->active =1;
+         return $order->save();
+     }
+     public function  getOrderByActive($active){
+         return  $this->order->where('active', '=', $active)->get();
+     }
+
+
 }
