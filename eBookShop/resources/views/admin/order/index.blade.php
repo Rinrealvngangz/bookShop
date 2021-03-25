@@ -23,114 +23,122 @@
     @endif
 
 
-<div class="container-fluid">
-    <div class="row">
-      <div class="col-12">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Order</h3>
-          </div>
-          <!-- /.card-header -->
-          <div class="card-body">
-            <table id="table" class="table table-bordered table-hover">
-              <thead>
-              <tr>
-                <th>Id</th>
-                <th>Customer</th>
-                <th>State</th>
-                <th>Active</th>
-                <th>Tools</th>
-              </tr>
-              </thead>
-              <tbody>
-              @foreach($order as $orders )
-                <tr>
-                <td>{{$orders->id}}</td>
-                <td>{{$orders->user->lastName}} {{$orders->user->firstName}}</td>
-                <td>{{$orders->state}}</td>
-                <td>{{$orders->active}}</td>
-               <td>
-               <div class="input-group mb-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Order</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
 
-               {!! Form::open(['method'=>'GET' , 'route' => ['order.edit',$orders->id]]) !!}
-              {{ Form::button('<i class="fas fa-edit"></i>', ['class' => 'btn btn-success', 'type' => 'submit']) }}
-                {!! Form::close() !!}
 
-               {!! Form::open(['method'=>'DELETE' , 'route' => ['order.destroy',$orders->id]]) !!}
-              {{ Form::button('<i class="far fa-trash-alt"></i>', ['class' => 'btn btn-danger', 'type' => 'submit']) }}
-               {!! Form::close() !!}
+
+                        <table id="table" class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+
+                                <th>Id</th>
+                                <th>Customer</th>
+                                <th>State</th>
+                                <th>Active</th>
+                                <th>Tools</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($order as $orders )
+                                <tr>
+                                    <td>{{$orders->id}}</td>
+                                    <td>   <a href="{{route('order.show',$orders->id)}}"> {{$orders->user->lastName}} {{$orders->user->firstName}}</a></td>
+                                    @if($orders->state === 1)
+                                        <td>Đang giao hàng</td>
+                                    @else
+                                        <td>Đang chờ xử lý</td>
+                                    @endif
+                                    @if($orders->active === 1)
+
+                                        <td>Đã chấp nhận</td>
+                                    @else
+                                        <td>Chờ chấp nhận</td>
+                                    @endif
+                                    <td>
+
+                                            {!! Form::open(['method'=>'DELETE' , 'route' => ['order.destroy',$orders->id]]) !!}
+                                            {{ Form::button('Delete', ['class' => 'btn btn-danger', 'type' => 'submit']) }}
+                                            {!! Form::close() !!}
+
+                                    </td>
+                                </tr>
+
+                            @endforeach
+                            </tbody>
+                            <tfoot>
+                            <tr>
+
+                                <th>Id</th>
+                                <th>Customer</th>
+                                <th>State</th>
+                                <th>Active</th>
+                                <th>Tools</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+
+
+                <!-- /.card -->
             </div>
-            </td>
-
-              </tr>
-
-              @endforeach
-              </tbody>
-              <tfoot>
-              <tr>
-                <th>Id</th>
-                <th>Customer</th>
-                <th>State</th>
-                <th>Active</th>
-                <th>Tools</th>
-              </tr>
-              </tfoot>
-            </table>
-              {!! Form::open(['method'=>'GET' , 'route' => ['order.create']]) !!}
-              {{ Form::button('Create Role', ['class' => 'btn btn-primary', 'type' => 'submit']) }}
-              {!! Form::close() !!}
-
-          </div>
-          <!-- /.card-body -->
+            <!-- /.col -->
         </div>
-        <!-- /.card -->
 
-
-        <!-- /.card -->
-      </div>
-      <!-- /.col -->
+        <!-- /.row -->
     </div>
-
-    <!-- /.row -->
-  </div>
-  <!-- /.container-fluid -->
-  <!-- Page specific script -->
+    <!-- /.container-fluid -->
+    <!-- Page specific script -->
 
 @endsection
 
 @section('script')
     <!-- DataTables  & Plugins -->
-<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<script src="/plugins/jszip/jszip.min.js"></script>
-<script src="/plugins/pdfmake/pdfmake.min.js"></script>
-<script src="/plugins/pdfmake/vfs_fonts.js"></script>
-<script src="/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-<script src="/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-<script src="/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-  <script>
-    $(function () {
-      $("#example1").DataTable({
-        "responsive": true, "lengthChange": false, "autoWidth": false,
-        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-      }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-      $('#table').DataTable({
-        "paging": true,
-        "lengthChange": false,
-        "searching": false,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false,
-        "responsive": true,
-      });
-    });
+    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="/plugins/jszip/jszip.min.js"></script>
+    <script src="/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
 
 
-  </script>
+        });
+
+
+    </script>
 
 @endsection
 

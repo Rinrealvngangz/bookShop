@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 use App\Contracts\OrderContract;
 class OrderController extends Controller
 {
-     private  $orderBook;
-     public function __construct(OrderContract $orderBook)
-     {
-         $this->orderBook =$orderBook;
-     }
+    private  $orderBook;
+    public function __construct(OrderContract $orderBook)
+    {
+        $this->orderBook =$orderBook;
+    }
 
     /**
      * Display a listing of the resource.
@@ -20,9 +20,8 @@ class OrderController extends Controller
 
     public function index()
     {
-        $order = $this->orderBook->getAll();
-       // return view('admin.index',compact('order'));
-        return view('admin.order.request',compact('order'));
+        $order = $this->orderBook->getOrderByActive(1);
+        return view('admin.order.index',compact('order'));
     }
 
     /**
@@ -97,8 +96,30 @@ class OrderController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function orderConfirm(){
-        $order = $this->orderBook->getAll();
-        // return view('admin.index',compact('order'));
-         return view('admin.order.request',compact('order'));
+        $order = $this->orderBook->getOrderByActive(0);
+        return view('admin.order.request',compact('order'));
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     *  @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function orderAccept($id)
+    {
+           $this->orderBook->orderAccept($id);
+           return redirect()->back();
+    }
+    /**
+     * Store a newly created resource in storage.
+     *
+     *  @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function orderDelete($id)
+    {
+        //
+    }
+
 }

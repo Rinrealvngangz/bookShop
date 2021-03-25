@@ -5,4 +5,7 @@ interface OrderContract{
     public function getAll();
     public function show($id);
     public function create(OrderBookRequest $orderBookRequest);
+    public function orderAccept($id);
+    public  function getOrderByActive($active);
+
 }
