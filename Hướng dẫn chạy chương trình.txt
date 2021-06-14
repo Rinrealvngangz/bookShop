@@ -1,0 +1,24 @@
+                                               Hướng dẫn chạy chương trình:
+   +Yêu cầu:
+
+    - XAMPP web server
+    - PHP 8 trở lên.
+    - Editor(VSCode hoặc PhpStorm)
+    - Laravel 8.0 trở lên.
+    - Nodejs phiên bản mới nhất.
+    - git
+    - Download Composer 2.1.3 link tải:https://getcomposer.org/download/  
+
+   + Cách chạy ứng dụng:
+
+    - Sau khi cài đặt XAMPP vào đường dẫn:C:\xampp\htdocs past folder CodeChuongTrinh tại đây.
+    - Mở trình Editor open folder CodeChuongTrinh, sau đó sử dụng terminal trên Editor gõ lệnh "composer       install", để cài       đặt và chạy composer.json cấu hình ứng dụng trong folder CodeChuongTrinh. 
+    - Lên trình duyệt gõ địa chỉ http://localhost/phpmyadmin tạo một database với tên eshopbook.
+    - Tiếp theo sử dụng terminal gõ lệnh "php artisan migrate" để tạo cột table vào cơ sở dữ liệu.
+    - Gõ lệnh php artisan serve để run server (chú ý trước đó phải start Apache và MySQL trong XAMPP).
+
+   + Lưu ý:
+
+    - Phải tạo dữ liệu bằng tay trước khi run chương trình vì hiện tại database không có dữ liệu do không     Factory dữ liệu trước, mong thầy và cô thông cảm ạ. 
+
+    Cảm ơn thầy cô đã xem.
