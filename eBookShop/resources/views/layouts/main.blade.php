@@ -1,163 +1,145 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminBookShop | Dashboard</title>
+<html lang="en" dir="ltr">
+@include('layouts.head')
 
-    <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-    <link rel="stylesheet" href="/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-    <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-    <link rel="stylesheet" href="/plugins/jqvmap/jqvmap.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="/css/adminlte.min.css">
+<body class="header-fixed sidebar-fixed sidebar-light header-light" id="body">
 
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-    <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker.css">
-    <!-- summernote -->
-    <link rel="stylesheet" href="/plugins/summernote/summernote-bs4.min.css">
 
-    @yield('styles')
-    <style>
-        .dropdown .dropdown-menu{
-            display: block;
-            opacity: 0;
-
-            -moz-transition:    all 1000ms ease;
-            -webkit-transition: all 1000ms ease;
-            -o-transition:      all 1000ms ease;
-            -ms-transition:     all 1000ms ease;
-            transition:         all 1000ms ease;
-        }
-        .dropdown:hover .dropdown-menu {
-            display: block;
-            opacity: 1;
-        }
-    </style>
-
-</head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<div id="toaster"></div>
 <div class="wrapper">
-    <!-- Preloader -->
-    <div class="preloader flex-column justify-content-center align-items-center">
-        <img class="animation__shake" src="/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-    </div>
+    <!-- Github Link -->
+    <a href="https://github.com/coding-gang" target="_blank" class="github-link">
+        <svg width="70" height="70" viewBox="0 0 250 250" aria-hidden="true">
+            <defs>
+                <linearGradient id="grad1" x1="0%" y1="75%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#896def;stop-opacity:1"/>
+                    <stop offset="100%" style="stop-color:#482271;stop-opacity:1"/>
+                </linearGradient>
+            </defs>
+            <path d="M 0,0 L115,115 L115,115 L142,142 L250,250 L250,0 Z" fill="url(#grad1)"></path>
+        </svg>
+        <i class="mdi mdi-github-circle"></i>
+    </a>
+    <!--
+          ====================================
+          ——— LEFT SIDEBAR WITH FOOTER
+          =====================================
+        -->
+    @include('layouts.sidebar')
 
-    <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-        <!-- Left navbar links -->
-    @include('layouts.left_navbar_links')
-    <!-- Right navbar links -->
-        @include('layouts.right_navbar_links')
-    </nav>
-    <!-- /.navbar -->
+    <div class="page-wrapper">
 
-    <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <!-- Brand Logo -->
-        <a href="index3.html" class="brand-link">
-            <img src="/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-            <span class="brand-text font-weight-light">Admin</span>
-        </a>
-
-        <!-- /.sidebar -->
-        @include('layouts.sidebar')
-
-    </aside>
-
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">Admin</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Home</a></li>
-                            <li class="breadcrumb-item active">Bookshop v1</li>
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
+        <div class="d-flex justify-content-center container mt-5" style="position: fixed; z-index: 999;">
+            <div class="row " id="notification-user-order"  style=" display: none ; position: absolute; top: 0; right: 0; margin-right: 30px;" data-delay="5000">
+                <div class="col-md-12">
+                    <div class="d-flex flex-row justify-content-between align-items-center card cookie p-3">
+                        <div class="d-flex flex-row align-items-center new-order">
+                            <span class="badge badge-success">new</span>
+                            <div class="ml-2 mr-2">
+                                <span>Bạn có một thông báo mới.</span><br>
+                                <div class="info-user"> </div><br>
+                                <span class="see-order"></span>
+                            </div>
+                        </div>
+                        <div><button class="btn btn-dark" onclick="removeNotification()" type="button">Okay</button></div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- /.content-header -->
+        @if(Session::has('review-accepted'))
+            <div class="alert alert-success alert-highlighted"
+                 style="z-index: 9999; position: fixed; top: 150px; right: 0;  " data-delay="5000">
+                <span>{{Session::get('review-accepted')}}</span>
+            </div>
+        @elseif(Session::has('review-delete'))
+            <div class="alert alert-success alert-highlighted"
+                 style="z-index: 9999; position: fixed; top: 150px; right: 0;  " data-delay="5000">
+                <span>{{Session::get('review-delete')}}</span>
+            </div>
 
-        <!-- Main content -->
-        <section class="section">
-            @yield('content')
-        </section>
-        <!-- /.content -->
+        @elseif(Session::has('import-success'))
+            <div class="alert alert-success alert-highlighted"
+                 style="z-index: 9999; position: fixed; top: 150px; right: 0;  " data-delay="5000">
+                <span>{{Session::get('import-success')}}</span>
+            </div>
+        @elseif(Session::has('delete-paymentFail'))
+            <div class="alert alert-danger alert-highlighted"
+                 style="z-index: 9999; position: fixed; top: 150px; right: 0;  " data-delay="5000">
+                <span>{{Session::get('delete-paymentFail')}}</span>
+            </div>
+        @elseif(Session::has('delete-paymentSuccess'))
+            <div class="alert alert-success alert-highlighted"
+                 style="z-index: 9999; position: fixed; top: 150px; right: 0;  " data-delay="5000">
+                <span>{{Session::get('delete-paymentSuccess')}}</span>
+            </div>
+        @elseif(Session::has('export'))
+            <div class="alert alert-success alert-highlighted"
+                 style="z-index: 9999; position: fixed; top: 150px; right: 0;  " data-delay="5000">
+                <span>{{Session::get('export')}}</span>
+            </div>
+        @endif
+        <div aria-live="polite" aria-atomic="true" style="position: relative;">
+            <div class="alert alert-success alert-highlighted"
+                 style="position: absolute; top: 0; right: 0; display: none;" data-delay="5000">
+                <i class="mdi mdi-chevron-down-circle"></i>
+
+                <span></span>
+
+
+            </div>
+        </div>
+
+        @include('layouts.header')
+        <div class="content-wrapper">
+            <div class="content">
+
+                <!--
+        ====================================
+        ——— OVERVIEW
+        =====================================
+      -->
+                @if(\Illuminate\Support\Facades\Route::currentRouteName()==="admin.index")
+{{--                    @include('layouts.overview-order')--}}
+                    @yield('overview-order')
+                @else
+
+                    <div class="breadcrumb-wrapper">
+                        @yield('name')
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb p-0">
+                                <li class="breadcrumb-item">
+                                    <a href="{{route('admin.index')}}">
+                                        <span class="mdi mdi-home"></span>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                        @yield('root')
+                                </li>
+                                <li class="breadcrumb-item" aria-current="page">@yield('model')</li>
+                            </ol>
+                        </nav>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+
+                            @yield('content')
+                            @endif
+
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+        @include('layouts.footer')
+
     </div>
-    <!-- /.content-wrapper -->
-@include('layouts.footer')
-
-<!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-    </aside>
-    <!-- /.control-sidebar -->
 </div>
-<!-- ./wrapper -->
-
 <!-- jQuery -->
-<script src="/plugins/jquery/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="/plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-    $.widget.bridge('uibutton', $.ui.button)
-</script>
-<!-- Bootstrap 4 -->
-<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="/plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="/plugins/sparklines/sparkline.js"></script>
-<!-- JQVMap -->
-<script src="/plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="/plugins/jquery-knob/jquery.knob.min.js"></script>
-<!-- daterangepicker -->
-<script src="/plugins/moment/moment.min.js"></script>
-<script src="/plugins/daterangepicker/daterangepicker.js"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="/plugins/summernote/summernote-bs4.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<!-- AdminLTE App -->
-<script src="/dist/js/adminlte.js"></script>
 
-<!-- DataTables  & Plugins -->
+@include('layouts.script')
 @yield('script')
-@yield('script-tagsinput')
-
-<script>
-    $(function () {
-        $(".alert").fadeTo(2000, 500).slideUp(500, function(){
-            $(".alert").slideUp(500);
-        });
-        $('#table').DataTable();
-    });
-
-
-</script>
 
 </body>
 </html>
+

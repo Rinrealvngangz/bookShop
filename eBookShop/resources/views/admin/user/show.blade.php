@@ -1,56 +1,65 @@
 @extends('layouts.main')
-
+@section('name')
+    <h1>Users</h1>
+@endsection
+@section('root')
+    <a href="{{route('user.index')}}">
+    Users
+    </a>
+@endsection
+@section('model')
+    users detail
+@endsection
 @section('content')
-
 
 
     <div class="container-fluid">
 
-        <div class="row">
+        <div class="row justify-content-center">
 
-            <div class="d-flex flex-column align-items-center text-center p-2 py-2">
-                <img src="{{$users->photo ? $users->photo->file : 'no user photo'}}" alt="" name="aboutme" width="140" height="140" border="0" class="img-circle"></a>
-            </div>
-            <div class="col-sm-12">
-                <div class="col-xs-12 col-sm-12">
-                    <h2>{{$users->lastName . " " . $users->firstName}}</h2>
-                    <p><strong>User Name: </strong> {{$users->userName}}</p>
-                    <p><strong>Email: </strong> {{$users->email}} </p>
-                    <p><strong>Role: </strong>
-                        @if(count($users->roles)==0)
-                        <span class="tags">No active </span>
-                        @else
-                            @foreach($users->roles as $role)
-                            <span class="badge badge-info">{{$role->name}} </span>
-                            @endforeach
-                         @endif
+            <div class="col-lg-10 col-xl-6 col-xxl-2 mr-6">
+                <div class="card card-default mt-6">
+                    <div class="card-body text-center p-4">
+                        <a href="javascript:0" data-toggle="modal" data-target="#modal-contact" class="text-secondary d-inline-block mb-3">
+                            <div class="image mb-3 mt-n9">
+                                <img src="{{$users->photo ? $users->photo->file : 'no user photo'}}" width="150" height="150" class="img-fluid rounded-circle" alt="Avatar Image">
+                            </div>
 
-                    </p>
+                            <h5 class="card-title text-dark">{{$users->lastName}}&nbsp{{$users->firstName}}</h5>
+
+                            <ul class="list-unstyled">
+                                <li class="d-flex mb-1">
+                                    <i class="mdi mdi-map mr-1"></i>
+                                    @if(count($users->roles) ==0)
+                                        <td>{{__('No active')}}</td>
+                                    @else
+                                        <td>
+                                            @foreach($users->roles as $role)
+                                                <span class="mb-1 mr-1 badge badge-pill badge-info">{{$role->name}}</span>
+                                            @endforeach
+                                        </td>
+                                    @endif
+                                </li>
+                                <li class="d-flex">
+                                    <i class="mdi mdi-email mr-1"></i>
+                                    <span>{{$users->email}}</span>
+                                </li>
+                            </ul>
+                        </a>
+                        <div class="row justify-content-center">
+                              <div class="m-sm-1">
+                                  @if(Auth::user()->id === $users->id || auth()->user()->hasRole('Administrator'))
+                            {!! Form::open(['method'=>'GET' , 'route' => ['user.edit',$users->id]]) !!}
+                            {{ Form::button('Update', ['class' => 'btn btn-outline-primary', 'type' => 'submit']) }}
+                            {!! Form::close() !!}
+                                      @endif
+                              </div>
+
+                        </div>
+                    </div>
                 </div>
-
             </div>
-
-        </div>
-        <div class="btn-group">
-
-            {!! Form::open(['method'=>'GET' , 'route' => ['user.role',$users->id]]) !!}
-            {{ Form::button('Assign role', ['class' => 'btn btn-outline-secondary', 'type' => 'submit']) }}
-            {!! Form::close() !!}
-
-
-            {!! Form::open(['method'=>'GET' , 'route' => ['user.edit',$users->id]]) !!}
-            {{ Form::button('Update', ['class' => 'btn btn-outline-primary', 'type' => 'submit']) }}
-            {!! Form::close() !!}
-
-            {!! Form::open(['method'=>'DELETE' , 'route' => ['user.destroy',$users->id]]) !!}
-            {{ Form::button('Delete', ['class' => 'btn btn-outline-danger', 'type' => 'submit']) }}
-            {!! Form::close() !!}
-        </div>
-
-
-
     </div>
-
 @endsection
 
 

@@ -1,5 +1,16 @@
 @extends('layouts.main')
 @section('content')
+@section('name')
+    <h1>Users</h1>
+@endsection
+@section('root')
+    <a href="{{route('user.show',$users->id)}}">
+    Users detail
+    </a>
+@endsection
+@section('model')
+    users edit
+@endsection
     <div class="container rounded bg-white mt-5 mb-5">
         <form method="POST" action={{route('user.update',$users->id)}} enctype="multipart/form-data">
             @csrf
@@ -26,6 +37,16 @@
                             </div>
                             <div class="col-md-6"><label for="lastName" class="labels">Last Name</label>
                                 <input name="lastName" type="text" class="form-control" value="{{$users->lastName}}" placeholder="lastname">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+
+                            <div class="col-md-6">
+                                <label for="address" class="labels">Address</label>
+                                <input name="address" type="text" class="form-control" placeholder="address" value="{{$users->address}}">
+                            </div>
+                            <div class="col-md-6"><label for="phoneNumber" class="labels">Phone number</label>
+                                <input name="phoneNumber" type="text" class="form-control" value="{{$users->phoneNumber}}" placeholder="phoneNumber" onkeypress="javascript:return isNumber(event)">
                             </div>
                         </div>
 
@@ -59,4 +80,14 @@
             </ul>
         </div>
     @endif
+@endsection
+@section('script')
+    <script>
+        function isNumber(evt) {
+            var iKeyCode = (evt.which) ? evt.which : evt.keyCode
+            if (iKeyCode != 46 && iKeyCode > 31 && (iKeyCode < 48 || iKeyCode > 57))
+                return false;
+            return true;
+        }
+    </script>
 @endsection

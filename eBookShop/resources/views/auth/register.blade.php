@@ -30,16 +30,18 @@
                             @enderror
 
                         </div>
+
                         <div class="form-group">
                             <input id="userName" type="text" placeholder="{{ __('User Name') }}" class="form-input @error('userName') is-invalid @enderror" name="userName" value="{{ old('userName') }}" required autocomplete="userName" autofocus>
 
-                                @error('userName')
-                                    <span class="invalid-feedback" role="alert">
+                            @error('userName')
+                            <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                @enderror
+                            @enderror
 
                         </div>
+
                         <div class="form-group">
                             <input id="email" type="email" placeholder="{{ __('E-Mail Address') }}" class="form-input @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
 

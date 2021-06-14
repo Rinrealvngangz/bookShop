@@ -26,6 +26,8 @@ class UpdateUserRequest extends FormRequest
         return [
             'firstName'=>'required|string|max:255',
             'lastName'=>'required|string|max:255',
+            'address'=>'required|string|min:8',
+            'phoneNumber'=>'required|string|min:10',
             'userName'=>'required|string|max:255',
             'email'=>'required|regex:/(.+)@(.+)\.(.+)/i|email'
 

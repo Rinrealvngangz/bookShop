@@ -1,75 +1,34 @@
-@extends('layouts.main')
-
-@section('content')
-
-
-    @if(Session::has('error-create-Role'))
-        <div class="alert alert-danger" role="alert">
-            <p >{{session('error-create-Role')}}</p>
-        </div>
-    @elseif(Session::has('error-exists-Permis'))
-        <div class="alert alert-danger" role="alert">
-            <p >{{session('error-exists-Permis')}}</p>
-        </div>
-    @endif
-    <div class="card card-primary">
-        <div class="container-fluid">
-            <div class="card-header">
-                <h2 class="card-title">Create Role</h2>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static"
+     data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add new role</h5>
+                <button type="button" id="btn-hidden" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <!-- /.card-header -->
-            <!-- form start -->
-            {!! Form::open(['method'=>'POST' , 'route' => ['role.store']]) !!}
-
-            <div class="form-group">
-                {!! Form::label('name', 'Role') !!}
-                {!! Form::text('name', null, ['class' => 'form-control']) !!}
-
+            <div class="modal-body">
+                <form>
+                    @csrf
+                    @method('POST')
+                    <div class="form-group">
+                        <label for="name" class="col-form-label">Role Name</label>
+                        <input name="name" id="name" type="text" class="form-control" placeholder="role name" value="">
+                        <div class="invalid-feedback name"></div>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <div class='form-group'>
-                    <label for='roles_permissions'>Add Permission</label>
-
-                    <input type='text' class='form-control' data-role="tagsinput" name='roles_permissions' id="roles_permissions"
-                           value="">
-
-                </div>
-                {{ Form::button('Create  Role!', ['class' => 'btn btn-success', 'type' => 'submit']) }}
-                {!! Form::close() !!}
-
-
+            <div class="modal-footer">
+                <button type="button" id="btn-close" class="btn btn-secondary btn-pill"
+                        data-dismiss="modal">Close
+                </button>
+                <button type="submit" id="role-submit" class="btn btn-success btn-pill">
+                    Save Changes
+                </button>
             </div>
         </div>
-
-        @if(count($errors) >0)
-            <div class="alert alert-danger">
-
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{$error}}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        @endsection
-
-
-        @section('styles')
-
-            <link rel="stylesheet" href="/css/admin/bootstrap-tagsinput.css" >
-
-        @endsection
-
-        @section('script-tagsinput')
-
-            <script src="/js/admin/bootstrap-tagsinput.js"></script>
-           <script>
-               $(function () {
-                   $(".alert-danger").fadeTo(2000, 500).slideUp(500, function () {
-                       $(".alert-danger").slideUp(500);
-                   });
-               });
-           </script>
-
-@endsection
+    </div>
+</div>

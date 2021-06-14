@@ -1,144 +1,160 @@
 @extends('layouts.main')
 
+@section('name')
+    <h1>Orders</h1>
+@endsection
+@section('root')
+    <a href="{{route('admin.index')}}">
+        App
+    </a>
+
+@endsection
+@section('model')
+    Orders
+@endsection
+
 @section('content')
 
-    @if(Session::has('update-role'))
-        <div class="alert alert-primary" role="alert">
-            <p >{{session('update-role')}}</p>
-        </div>
-
-    @endif
-    @if(Session::has('create-role'))
-        <div class="alert alert-success" role="alert">
-            <p >{{session('create-role')}}</p>
-        </div>
-
-    @endif
-
-    @if(Session::has('delete-role'))
-        <div class="alert alert-danger" role="alert">
-            <p >{{session('delete-role')}}</p>
-        </div>
-
-    @endif
-
-
-    <div class="container-fluid">
-        <div class="row">
             <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Order</h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-
-
-
-                        <table id="table" class="table table-bordered table-hover">
-                            <thead>
-                            <tr>
-
-                                <th>Id</th>
-                                <th>Customer</th>
-                                <th>State</th>
-                                <th>Active</th>
-                                <th>Tools</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($order as $orders )
-                                <tr>
-                                    <td>{{$orders->id}}</td>
-                                    <td>   <a href="{{route('order.show',$orders->id)}}"> {{$orders->user->lastName}} {{$orders->user->firstName}}</a></td>
-                                    @if($orders->state === 1)
-                                        <td>Đang giao hàng</td>
-                                    @else
-                                        <td>Đang chờ xử lý</td>
-                                    @endif
-                                    @if($orders->active === 1)
-
-                                        <td>Đã chấp nhận</td>
-                                    @else
-                                        <td>Chờ chấp nhận</td>
-                                    @endif
-                                    <td>
-
-                                            {!! Form::open(['method'=>'DELETE' , 'route' => ['order.destroy',$orders->id]]) !!}
-                                            {{ Form::button('Delete', ['class' => 'btn btn-danger', 'type' => 'submit']) }}
-                                            {!! Form::close() !!}
-
-                                    </td>
-                                </tr>
-
-                            @endforeach
-                            </tbody>
-                            <tfoot>
-                            <tr>
-
-                                <th>Id</th>
-                                <th>Customer</th>
-                                <th>State</th>
-                                <th>Active</th>
-                                <th>Tools</th>
-                            </tr>
-                            </tfoot>
-                        </table>
-
+                <div class="card card-default">
+                    <div class="card-header card-header-border-bottom d-flex justify-content-between">
+                        <h2>Order</h2>
 
                     </div>
-                    <!-- /.card-body -->
+                <div class="card-body">
+                <div class="basic-data-table">
+
+                    <table id="basic-data-table" class="table nowrap" style="width:100%">
+                        <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer Name</th>
+                            <th class="d-none d-lg-table-cell">Order Date</th>
+                            <th>City</th>
+                            <th>Country</th>
+                            <th>Status</th>
+                            <th>Payment</th>
+                            <th>Action</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($orders as $item)
+
+                        <tr>
+                            <td>{{$item->id}}</td>
+                            <td >
+                                <a class="text-dark" href="{{route('order.orderShow',[$item->id,$item->user->id])}}">{{$item->user->full_name}}</a>
+                            </td>
+                            <td class="d-none d-lg-table-cell">{{$item->created_at}}</td>
+                            <td>{{$item->city}}</td>
+                            <td>{{$item->country}}</td>
+                            <td>
+                                @if($item->status === "Waiting accepted")
+                                <span class="badge badge-warning">{{$item->status}}</span>
+                                    @elseif($item->status === "Waiting delivery")
+                                    <span class="badge badge-secondary">{{$item->status}}</span>
+                                @elseif($item->status === "Successfully delivered")
+                                    <span class="badge badge-success">{{$item->status}}</span>
+                                @elseif($item->status === "Accepted")
+                                    <span class="badge badge-info">{{$item->status}}</span>
+                                @else
+                                    <span class="badge badge-danger">{{$item->status}}</span>
+                                    @endif
+                            </td>
+                            <td>
+                                @if($item->payment === null)
+                                      Thanh toán khi nhận hàng
+                                @else
+                                    <ul>
+                                        <li>Thanh toán:Online</li>
+                                        <li>Số tiền:{{number_format(substr($item->payment->money,0,-2), 0)}} vnd</li>
+                                        <li>Nội dung thanh toán:{{$item->payment->note}}</li>
+                                        @if($item->payment->vnp_response_code == 00)
+                                        <li>Trạng thái:Thành công</li>
+                                        @endif
+                                        <li>Mã GD Tại VNPAY:{{$item->payment->code_vnpay}}</li>
+                                        <li>Mã Ngân hàng:{{$item->payment->code_bank}}</li>
+                                        <li>Thời gian:{{$item->payment->time}}</li>
+                                    </ul>
+                                    @endif
+                            </td>
+                            <td>
+                                @if(auth()->user()->hasDirectPermission('Update')||auth()->user()->hasRole('Administrator'))
+                                    <select class="form-select" data-value="{{$item->id}}" id="setColor{{$item->id}}" onchange="getColor(this)">
+
+                                       <option class="badge badge-info" value="0">Accepted</option>
+                                        <option class="badge badge-warning" value="1">Waiting accepted</option>
+                                        <option class="badge badge-secondary" value="2">Waiting delivery</option>
+                                        <option class="badge badge-success" value="3">Successfully delivered</option>
+                                        <option class="badge badge-danger" value="4">Cancel</option>
+
+                                    </select>
+                                    @endif
+
+                            </td>
+                            <td>
+                                @if(auth()->user()->hasDirectPermission('Update')||auth()->user()->hasRole('Administrator'))
+                                {!! Form::open(['method' => 'PATCH' ,'route' => ['order.update',$item->id] ]) !!}
+                                             <input id="status{{$item->id}}" name="status" type="hidden" value="">
+                                    <button data-value="{{$item->id}}"   class="mb-1 btn btn-sm btn-primary" type="submit">Save</button>
+                                {!! Form::close() !!}
+                                 @endif
+
+                            </td>
+
+                        </tr>
+
+                        @endforeach
+                        </tbody>
+                    </table>
+
                 </div>
-                <!-- /.card -->
-
-
-                <!-- /.card -->
+                </div>
             </div>
-            <!-- /.col -->
         </div>
 
-        <!-- /.row -->
-    </div>
-    <!-- /.container-fluid -->
-    <!-- Page specific script -->
-
 @endsection
-
 @section('script')
-    <!-- DataTables  & Plugins -->
-    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-    <script src="/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-    <script src="/plugins/jszip/jszip.min.js"></script>
-    <script src="/plugins/pdfmake/pdfmake.min.js"></script>
-    <script src="/plugins/pdfmake/vfs_fonts.js"></script>
-    <script src="/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-    <script src="/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-    <script src="/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script>
-        $(function () {
-            $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
-            });
+        @if(Session::has('update-status'))
+        $(".alert-highlighted span").text("{{session('update-status')}}");
+        $('.alert-highlighted').show();
+        $('.alert-highlighted').fadeOut(5000);
+        @elseif(Session::has('delete-success'))
+        $(".alert-highlighted span").text("{{session('delete-success')}}");
+        $('.alert-highlighted').show();
+        $('.alert-highlighted').fadeOut(5000);
+        @endif
+       function getColor(item){
+             var id =  item.getAttribute("data-value");
+             var htmlId = "#setColor"+id;
+           var val = $(htmlId).find('option:selected').text();
+
+           $(`input[id="status${id}"]`).val(val);
+               console.log(val);
+               $(htmlId).removeClass('btn-info');
+               $(htmlId).removeClass('btn-success');
+               $(htmlId).removeClass('btn-warning');
+               $(htmlId).removeClass('btn-danger');
+               $(htmlId).removeClass('btn-secondary');
+               if(val === "Waiting delivery"){
+                   $(htmlId).addClass('btn-secondary');
+               }
+               else if(val === "Successfully delivered"){
+                   $(htmlId).addClass('btn-success');
+               }
+               else if(val === "Accepted"){
+                   $(htmlId).addClass('btn-info');
+               }
+               else if(val === "Cancel"){
+                   $(htmlId).addClass('btn-danger');
+               }else if (val === "Waiting accepted"){
+                   $(htmlId).addClass('btn-warning');
+               }
+       }
 
 
-        });
-
-
-    </script>
+       </script>
 
 @endsection
-

@@ -23,6 +23,15 @@
         "sass-loader": "^8.0.0"
     },
     "dependencies": {
-        "gulp": "^4.0.2"
+        "and": "0.0.3",
+        "gulp": "^4.0.2",
+<<<<<<< HEAD
+        "npm": "^7.7.5",
+        "run": "^1.4.0"
+=======
+        "npm": "^7.7.4",
+        "run": "^1.4.0",
+        "tree-multiselect": "^2.6.1"
+>>>>>>> f591d0157a53bd2ffc1dfc2b72cc18a8a4997609
     }
 }

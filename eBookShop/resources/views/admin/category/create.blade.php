@@ -20,9 +20,10 @@
                            value="" placeholder="enter name category">
 
                 </div>
+                @if(auth()->user()->hasDirectPermission('Create'))
                 {{ Form::button('Create  category!', ['class' => 'btn btn-success', 'type' => 'submit']) }}
                 {!! Form::close() !!}
-
+                  @endif
 
             </div>
         </div>

@@ -24,6 +24,8 @@ class User extends Authenticatable
         'lastName',
         'email',
         'password',
+        'phoneNumber',
+        'address'
     ];
 
     /**
@@ -47,6 +49,12 @@ class User extends Authenticatable
 
     public function photo(){
         return $this->belongsTo('App\Models\Photo');
+    }
+    public function getFullNameAttribute(){
+        return  "{$this->lastName} {$this->firstName}";
+    }
+    public function orders(){
+        return $this->hasMany('App\Models\Order', 'user_id', 'id');
     }
 
 

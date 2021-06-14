@@ -1,59 +1,30 @@
-@extends('layouts.main')
 
-
-@section('content')
-
-    <div class="card card-primary">
-        <div class="container-fluid">
-            <div class="card-header">
-                <h2 class="card-title">Update Permission</h2>
+<div class="modal fade" id="exampleModalsmallEdit" tabindex="-1" role="dialog"  data-backdrop="static"
+     data-keyboard="false"
+     aria-labelledby="exampleModalSmallTitle" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalSmallTitle">Create permission</h5>
+                <button  onclick="removeFormModalSmall()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <!-- /.card-header -->
-            <!-- form start -->
-            {!! Form::model($permission, ['method' => 'PATCH' ,'route' => ['permission.update',$permission->id]]) !!}
+            <div class="modal-body">
+                {!! Form::open(['id'=>'form-create-permission']) !!}
+                <div class="form-group">
+                    <label for="name" class="col-form-label">Permission Name</label>
+                    <input name="name" id="name" type="text" class="form-control" placeholder="permission name" value="">
+                    <div class="invalid-feedback name"></div>
+                </div>
 
-            <div class="form-group">
-                {!! Form::label('name', 'Permission') !!}
-                {!! Form::text('name', $permission->name, ['class' => 'form-control']) !!}
-
+                {!! Form::close() !!}
             </div>
-            <div class="form-group">
-                {!! Form::label('name_assign_role', 'Assign Role') !!}
-            <div class="row" name="name_assign_role">
-               @foreach($role as $roles)
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <div class="form-check">
-                                <input class="form-check-input" name="arrayIdRole[]" type="checkbox" value={{$roles->id}}
-                                {{ (is_array($arrayIdRole) and in_array($roles->id, $arrayIdRole)) ? ' checked' : '' }}
-                                 >
-                                <label class="form-check-label">{{$roles->name}}</label>
-
-                            </div>
-                        </div>
-                    </div>
-            @endforeach
-
+            <div class="modal-footer">
+                <button type="button" id="btn-create-permission" class="btn btn-success btn-pill">Save</button>
             </div>
-            </div>
-            {{ Form::button('Update the Permission!', ['class' => 'btn btn-success', 'type' => 'submit']) }}
-            {!! Form::close() !!}
-            </div>
-
         </div>
-
-        @if(count($errors) >0)
-            <div class="alert alert-danger">
-
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{$error}}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-
-@endsection
+    </div>
+</div>
 
 

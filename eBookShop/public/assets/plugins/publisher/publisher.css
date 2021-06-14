@@ -1,0 +1,7 @@
+#btn-publisher-edit {
+    display: none;
+}
+
+.divAuthor:hover  #btn-publisher-edit, #btn-publisher-edits:hover {
+    display: inline;
+}

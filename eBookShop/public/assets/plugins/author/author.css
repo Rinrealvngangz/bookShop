@@ -1,0 +1,7 @@
+#btn-author-edit {
+    display: none;
+}
+
+.divAuthor:hover  #btn-author-edit, #btn-author-edit:hover {
+    display: inline;
+}

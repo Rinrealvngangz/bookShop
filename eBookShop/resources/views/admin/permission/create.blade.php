@@ -1,61 +1,43 @@
-@extends('layouts.main')
 
-@section('content')
+    <div class="modal fade" id="exampleModalsmallPermission" tabindex="-1" role="dialog"  data-backdrop="static"
+         data-keyboard="false"
+         aria-labelledby="exampleModalSmallTitle" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalSmallTitle">Edit permission</h5>
+                    <button  onclick="removeFormModalSmall()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {!! Form::open(['id'=>'form-permission']) !!}
+                    <div class="form-group">
+                        <label for="arrayPermission">Choose permission</label>
+                        <select class="select2bs4" name="arrayPermission[]" id="arrayPermission" multiple="multiple" data-placeholder="Select a permission" style="width: 100%;">
 
-<div class="card card-primary">
-    <div class="container-fluid">
-        <div class="card-header">
-            <h2 class="card-title">Create Permission</h2>
-        </div>
-        <!-- /.card-header -->
-        <!-- form start -->
-        {!! Form::open(['method'=>'POST' , 'route' => ['permission.store']]) !!}
+                        </select>
+                        <div class="invalid-feedback permission"></div>
+                        </div>
+                    <div class="m-sm-3">
+                        <label class="control outlined control-checkbox"> Cancel register users
+                            <input id="cancelUser" name="cancelUser" type="checkbox" value="0">
+                            <div class="control-indicator"></div>
+                        </label>
+                    </div>
 
-
-        <div class="form-group">
-            <div class='form-group'>
-                <label for='permissions'>Add Permission</label>
-
-                <input type='text' class='form-control' data-role="tagsinput" name='permissions' id="permissions"
-                       value="">
-
+                    <div class="m-sm-3">
+                        <label class="control outlined control-checkbox"> Cancel register role
+                            <input id="cancelRole" name="cancelRole" type="checkbox" value="1">
+                            <div class="control-indicator"></div>
+                        </label>
+                    </div>
+                    {!! Form::close() !!}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btn-cancel-register" class="btn btn-success btn-pill">Cancel registration</button>
+                </div>
             </div>
-            {{ Form::button('Create  Permission!', ['class' => 'btn btn-success', 'type' => 'submit']) }}
-            {!! Form::close() !!}
-
-
         </div>
     </div>
 
-    @if(count($errors) >0)
-    <div class="alert alert-danger">
-
-        <ul>
-            @foreach($errors->all() as $error)
-            <li>{{$error}}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
-
-    @endsection
-
-
-    @section('styles')
-
-    <link rel="stylesheet" href="/css/admin/bootstrap-tagsinput.css" >
-
-    @endsection
-
-    @section('script-tagsinput')
-
-    <script src="/js/admin/bootstrap-tagsinput.js"></script>
-    <script>
-        $(function () {
-            $(".alert-danger").fadeTo(2000, 500).slideUp(500, function () {
-                $(".alert-danger").slideUp(500);
-            });
-        });
-    </script>
-
-    @endsection

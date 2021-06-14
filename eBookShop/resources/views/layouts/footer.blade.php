@@ -1,7 +1,18 @@
- <footer class="main-footer">
-          <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-          All rights reserved.
-          <div class="float-right d-none d-sm-inline-block">
-            <b>Version</b> 3.1.0-rc
-          </div>
-        </footer>
+<footer class="footer mt-auto">
+    <div class="copyright bg-white">
+        <p>
+            &copy; <span id="copy-year">2019</span> Copyright Sleek Dashboard Bootstrap Template by
+            <a
+                class="text-primary"
+                href="http://www.iamabdus.com/"
+                target="_blank"
+            >Abdus</a
+            >.
+        </p>
+    </div>
+    <script>
+        var d = new Date();
+        var year = d.getFullYear();
+        document.getElementById("copy-year").innerHTML = year;
+    </script>
+</footer>

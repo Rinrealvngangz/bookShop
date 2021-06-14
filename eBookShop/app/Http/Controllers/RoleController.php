@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\RoleContract;
 use App\Http\Requests\CreateRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use Illuminate\Contracts\Session\Session;
@@ -11,9 +12,11 @@ use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
+    protected $accessContract;
 
-
-
+   public function __construct(RoleContract $accessContract){
+         $this->accessContract =$accessContract;
+   }
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +24,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-             $role = Role::all();
+       $role = $this->accessContract->getAll();
         return view('admin.role.index',compact('role'));
     }
 
@@ -32,7 +35,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-          return view('admin.role.create');
+        //
     }
 
     /**
@@ -43,45 +46,8 @@ class RoleController extends Controller
      */
     public function store(CreateRoleRequest $request)
     {
-        $name =$request->input('name');
-         $permission = $request->input('roles_permissions');
-        $stringEdit =  preg_replace('/[-\s]+/', '-', strtolower(trim($permission)));
-        $namePermissions = explode(',', $stringEdit);
-         $result = Role::all()->where('name',$name)->first();
-          if($result === null ){
-
-               if($namePermissions !==null){
-                   $count =0;
-                   foreach ($namePermissions as $namePermission){
-                      $result =  Permission::all()->where('name',$namePermission)->first();
-
-                         if($result !==null){
-                              $count =1;
-
-                            $request->session()->flash('error-exists-Permis','Permisson is exists!');
-                            return redirect()->back();
-                        }
-
-                   }
-                   if($count ==0){
-                       $role = Role::create(['name' => $name]);
-                         if(!empty($namePermissions[0])){
-                             foreach ($namePermissions as $namePermission){
-                                 $permis = Permission::create(['name' => $namePermission]);
-                                 $role->givePermissionTo($permis);
-                             }
-                         }
-
-                   }
-
-               }
-              $request->session()->flash('create-role','Role create success!');
-              return redirect()->route('role.index');
-          }else{
-              $request->session()->flash('error-create-Role','Role is exists!');
-              return redirect()->back();
-          }
-
+         $role = $this->accessContract->create($request);
+        return response()->json(['success' => 'Success add new role!', 'role' => $role]);
     }
 
     /**
@@ -92,7 +58,7 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-
+        //
     }
 
     /**
@@ -103,17 +69,9 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-       $role = Role::findOrFail($id);
+        $data = $this->accessContract->edit($id);
 
-       $permission = Permission::all();
-
-        $arrayIdPermiss = array();
-        $IdPermiss =$role->permissions;
-        foreach ($IdPermiss as $idPermiss){
-            array_push($arrayIdPermiss,$idPermiss->id);
-        }
-
-      return view('admin.role.edit',compact('role','permission','arrayIdPermiss'));
+      return response()->json(["role"=>$data[0],"permissions"=>$data[1],"arrayRoleHasPermission"=>$data[2]]);
     }
 
     /**
@@ -125,33 +83,9 @@ class RoleController extends Controller
      */
     public function update(UpdateRoleRequest $request, $id)
     {
-        $role = Role::findOrFail($id);
-        $input = $request->all();
-        $arrayNamePermission = array();
-        $originPermission = Permission::all();
 
-        foreach ($originPermission as $namePermission){
-            array_push($arrayNamePermission,$namePermission->name);
-        }
-
-
-        if(array_key_exists('arrayIdPermiss',$input))
-        {
-            foreach ($originPermission as $permission){
-                if(in_array($permission,$input['arrayIdPermiss']) === false){
-
-                    $role->revokePermissionTo($permission);
-                }
-            }
-            $role->givePermissionTo($input['arrayIdPermiss']);
-        }else{
-            $role->syncPermissions([]);
-        }
-
-
-        $request->session()->flash('update-role','The Role update success!');
-
-     return redirect()->route('role.index');
+       $permissions = $this->accessContract->update($request,$id);
+        return response()->json(["success"=>"Edit role success!","result"=>$permissions]);
     }
 
     /**
@@ -162,9 +96,7 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-      //   $role = Role::findOrDetail($id);
-          Role::destroy($id);
-        \Illuminate\Support\Facades\Session::flash('delete-role','Role delete success!');
-        return redirect()->back();
+        $result = $this->accessContract->delete($id);
+        return response()->json(['result'=>$result]);
     }
 }

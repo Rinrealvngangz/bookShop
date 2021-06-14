@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Contracts\OrderContract;
+use App\Contracts\HomeContract;
 class OrderController extends Controller
 {
     private  $orderBook;
-    public function __construct(OrderContract $orderBook)
+    private  $homeContract;
+    public function __construct(OrderContract $orderBook,HomeContract $homeContract)
     {
         $this->orderBook =$orderBook;
+        $this->homeContract =$homeContract;
     }
 
     /**
@@ -20,8 +23,8 @@ class OrderController extends Controller
 
     public function index()
     {
-        $order = $this->orderBook->getOrderByActive(1);
-        return view('admin.order.index',compact('order'));
+        $orders = $this->orderBook->getAll();
+        return view('admin.order.index',compact('orders'));
     }
 
     /**
@@ -47,13 +50,25 @@ class OrderController extends Controller
 
     /**
      * Display the specified resource.
-     *
+     * @param  int  $customer
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id,  $customer)
     {
-        //
+
+    }
+    /**
+     * Display the specified resource.
+     * @param  int  $customer
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function orderShow($id, $customer)
+    {
+
+       $item = $this->orderBook->orderShow($id,$customer);
+      return view('admin.order.overview',compact("item"));
     }
 
     /**
@@ -76,20 +91,36 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+       $result = $this->orderBook->update($request,$id);
+       if( $result === "Update date success"){
+           $request->session()->flash('update-status',$result);
+       }
+        return redirect()->route('order.index');
+
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Update the specified resource in storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
-    }
 
+    }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function orderDelete($id,$userId){
+        $result = $this->orderBook->destroy($id);
+        return response()->json(['result'=>$result]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -100,26 +131,6 @@ class OrderController extends Controller
         return view('admin.order.request',compact('order'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     *  @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function orderAccept($id)
-    {
-           $this->orderBook->orderAccept($id);
-           return redirect()->back();
-    }
-    /**
-     * Store a newly created resource in storage.
-     *
-     *  @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function orderDelete($id)
-    {
-        //
-    }
+
 
 }
